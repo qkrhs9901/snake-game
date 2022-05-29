@@ -15,7 +15,6 @@
 #define MISSIONBOARD_ROWS MISSIONBOARD_DIM
 #define MISSIONBOARD_COLS MISSIONBOARD_DIM * 3
 
-
 int main(int argc, char *argv[]){
 
     initscr();
@@ -29,7 +28,6 @@ int main(int argc, char *argv[]){
     GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
     game.initialize();
     game.setBkgd(COLOR_PAIR(1));
-    game.addAt(1,1, 'A');
     game.addBorder(COLOR_PAIR(2));
     game.refresh();
 

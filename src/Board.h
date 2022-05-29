@@ -1,6 +1,9 @@
 #include <iostream>
 #include <ncurses.h>
 
+#ifndef __BOARD__
+#define __BOARD__
+
 class Board{
     WINDOW *board_win;
     int height, width;
@@ -48,5 +51,6 @@ public:
         wrefresh(board_win);
     }
 
-
 };
+
+#endif
