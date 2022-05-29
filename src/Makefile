@@ -4,16 +4,22 @@ CCFLAG1 = -g
 CCFLAG2 = -o
 CURSES = -lncursesw
 
-main : main.cpp Board.h GameBoard.h
-	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) main main.cpp $(CURSES)
+Player : Player.o Player.h Settings.h
+	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) Player Player.o $(CURSES)
 
-clean:
+Snake : Snake.o Snake.h Settings.h
+	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) Snake Snake.o $(CURSES)
+
+main : main.o Player.o Snake.o Player.h Board.h GameBoard.h Snake.h Settings.h
+	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) main main.o $(CURSES)
+
+clean :
 	rm -f *.o
 
 
 %.o : %.cpp %.h
-	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) -c $< $(CURSES)
+	$(CC) $(STD) $(CCFLAG1) -c $< $(CURSES)
 %.o : %.cpp
-	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) -c $< $(CURSES)
+	$(CC) $(STD) $(CCFLAG1) -c $< $(CURSES)
 % : %.cpp
-	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) -o $@ $< $(CURSES)
+	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) $@ $< $(CURSES)

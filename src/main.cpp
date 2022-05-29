@@ -1,28 +1,27 @@
 #include <ncurses.h>
+#include <iostream>
+#include <vector>
 #include "Board.h"
 #include "GameBoard.h"
-
-#define GAMEBOARD_DIM 22
-#define GAMEBOARD_ROWS GAMEBOARD_DIM
-#define GAMEBOARD_COLS GAMEBOARD_DIM * 2
-#define GAMEBOARD_POS 4
-
-#define SCOREBOARD_DIM 10
-#define SCOREBOARD_ROWS SCOREBOARD_DIM
-#define SCOREBOARD_COLS SCOREBOARD_DIM * 3
-
-#define MISSIONBOARD_DIM 10
-#define MISSIONBOARD_ROWS MISSIONBOARD_DIM
-#define MISSIONBOARD_COLS MISSIONBOARD_DIM * 3
+#include "Snake.h"
+#include "Snake.cpp"
+#include "Player.h"
+#include "Player.cpp"
+#include "Settings.h"
 
 int main(int argc, char *argv[]){
-
     initscr();
+    nodelay(stdscr, true);      // getch will not wait until user press a key
+    // keypad(stdscr, true);       // keypad to control
+    noecho();
+    curs_set(0);                // invisible cursor
     start_color();
     refresh();
-    init_pair(1, COLOR_BLACK, COLOR_WHITE);
-    init_pair(2, COLOR_BLACK, COLOR_BLUE);
-    init_pair(3, COLOR_BLACK, COLOR_CYAN);
+    init_pair(1, COLOR_BLACK, COLOR_WHITE);     // set color as a pair to number 5 (text and background) - WHITE
+    init_pair(2, COLOR_BLACK, COLOR_BLUE);      // set color as a pair to number 5 (text and background) - BLUE
+    init_pair(3, COLOR_BLACK, COLOR_CYAN);      // set color as a pair to number 5 (text and background) - CYAN
+    init_pair(5, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 5 (text and background) - RED
+    
 
     // gameboard
     GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
@@ -57,21 +56,33 @@ int main(int argc, char *argv[]){
     btmEdgeR.refresh();
 
     // score board
-    Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, 4, 58);
+    Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
     score.initialize();
     score.setBkgd(COLOR_PAIR(1));
     score.addBox();
     score.refresh();
 
     // mission board
-    Board mission(SCOREBOARD_ROWS, SCOREBOARD_COLS, 16, 58);
+    Board mission(SCOREBOARD_ROWS, SCOREBOARD_COLS, MISSIONBOARD_POS_Y, MISSIONBOARD_POS_X);
     mission.initialize();
     mission.setBkgd(COLOR_PAIR(1));
     mission.addBox();
     mission.refresh();
 
-    getch();
+    Player p;
+    p.setBoard();
+    
+    Snake s;
+    s.start();
+    
+    attron(COLOR_PAIR(5));      // set color 2 to terminal
+    move(14, 18);
+    printw("G A M E   O V E R");
+    refresh();
+    attroff(COLOR_PAIR(5));     // reset color to terminal
 
+    nodelay(stdscr, false);
+    getch();
     endwin();
 
     return 0;
