@@ -2,8 +2,8 @@
 #include "Settings.h"
 
 Player::Player() {
-    current_size = 3;
-    max_size = 3;
+    current_size = 5;
+    max_size = 5;
     growth_count = 0;
     poison_count = 0;
     gate_count = 0;
