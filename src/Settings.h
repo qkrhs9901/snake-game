@@ -32,4 +32,9 @@
 #define MISSIONBOARD_POS_Y 16
 #define MISSIONBOARD_POS_X 58
 
+#define RED 4
+#define GREEN 5
+#define MAGENTA 6
+#define RED_WHITE 7
+
 #endif

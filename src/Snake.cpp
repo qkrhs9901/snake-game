@@ -14,26 +14,32 @@ Snakepart::Snakepart() {
 
 Snake::Snake() {
     direction = 'l';
-    snakepart='x';
+    snakepart=' ';
     del = 110000;
     get = false;
     for (int i = 0; i < 5; i++) {
         snake.push_back(Snakepart(40+i, 10));
     }
-    init_pair(4, COLOR_BLACK, COLOR_WHITE);     // set color as a pair to number 4 (text and background) - WHITE
-    
-    attron(COLOR_PAIR(4));
-    for (int i = 0; i <  snake.size(); i++) {
+
+    // head
+    attron(COLOR_PAIR(RED));
+    move(snake[0].y, snake[0].x);
+    addch(snakepart);
+    attroff(COLOR_PAIR(RED));
+
+    // body
+    attron(COLOR_PAIR(GREEN));
+    for (int i = 1; i <  snake.size(); i++) {
         move(snake[i].y, snake[i].x);
         addch(snakepart);
     }
     refresh();
 }
 Snake::~Snake() {
-    attroff(COLOR_PAIR(4));         // reset color to terminal
+    attroff(COLOR_PAIR(GREEN));         // reset color to terminal
 }
 bool Snake::collision() {
-    if ((snake[0].x == GAMEBOARD_POS+GAMEBOARD_COLS-1 || snake[0].x == GAMEBOARD_POS) || (snake[0].y == GAMEBOARD_POS || snake[0].y == GAMEBOARD_POS+GAMEBOARD_ROWS-1)) {
+    if ((snake[0].x == GAMEBOARD_START_X-1 || snake[0].x == GAMEBOARD_END_X+1) || (snake[0].y == GAMEBOARD_START_Y -1 || snake[0].y == GAMEBOARD_END_Y)) {
         return true;
     }
     for (int i = 2; i < snake.size(); i++) {
@@ -74,11 +80,16 @@ void Snake::movesnake() {
     }
 
     if (!get) {
+        attroff(COLOR_PAIR(GREEN));
+        attron(COLOR_PAIR(1));
         move(snake[snake.size()-1].y, snake[snake.size()-1].x);
         addch(' ');
+        attroff(COLOR_PAIR(1));
         refresh();
         snake.pop_back();
     }
+
+    if(get) {attroff(COLOR_PAIR(GREEN));}
     
     if (direction == 'l') {
         snake.insert(snake.begin(), Snakepart(snake[0].x-1, snake[0].y));
@@ -89,19 +100,26 @@ void Snake::movesnake() {
     } else if (direction == 'd') {
         snake.insert(snake.begin(), Snakepart(snake[0].x, snake[0].y+1));
     }
+
+
+    attron(COLOR_PAIR(RED));
     move(snake[0].y, snake[0].x);
+    addch(snakepart);
+    attroff(COLOR_PAIR(RED));
+    attron(COLOR_PAIR(GREEN));
+    move(snake[1].y, snake[1].x);
     addch(snakepart);
     refresh();
 }
 void Snake::start() {
     while (1) {
         if (collision()) {
-            attroff(COLOR_PAIR(4));     // reset color to terminal
+            attroff(COLOR_PAIR(GREEN));     // reset color to terminal
             break;
         }
         movesnake();
         if (direction == 'q') {
-            attroff(COLOR_PAIR(4));     // reset color to terminal
+            attroff(COLOR_PAIR(GREEN));     // reset color to terminal
             break;
         }
         usleep(del);

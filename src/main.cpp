@@ -20,11 +20,14 @@ int main(int argc, char *argv[]){
     curs_set(0);                // invisible cursor
     start_color();
     refresh();
-    init_pair(1, COLOR_BLACK, COLOR_WHITE);     // set color as a pair to number 5 (text and background) - WHITE
-    init_pair(2, COLOR_BLACK, COLOR_BLUE);      // set color as a pair to number 5 (text and background) - BLUE
-    init_pair(3, COLOR_BLACK, COLOR_CYAN);      // set color as a pair to number 5 (text and background) - CYAN
-    init_pair(5, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 5 (text and background) - RED
-    
+    init_pair(1, COLOR_BLACK, COLOR_WHITE);     // set color as a pair to number 1 (background - WHITE) 
+    init_pair(2, COLOR_BLACK, COLOR_BLUE);      // set color as a pair to number 2 (background - BLUE)
+    init_pair(3, COLOR_BLACK, COLOR_CYAN);      // set color as a pair to number 3 (background - CYAN) 
+    init_pair(RED, COLOR_BLACK, COLOR_RED);       // set color as a pair to number 4 (background - RED) 
+    init_pair(GREEN, COLOR_BLACK, COLOR_GREEN);     // set color as a pair to number 5 (background - GREEN) 
+    init_pair(MAGENTA, COLOR_BLACK, COLOR_MAGENTA);       // set color as a pair to number 6 (background - MAGENTA) 
+    init_pair(RED_WHITE, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 7 (text - RED / background - WHITE) 
+
 
     // inner wall
     innerWall wall_1;
@@ -63,11 +66,11 @@ int main(int argc, char *argv[]){
     Snake s;
     s.start();
     
-    attron(COLOR_PAIR(5));      // set color 2 to terminal
+    attron(COLOR_PAIR(RED_WHITE));      // set color 2 to terminal
     move(14, 18);
     printw("G A M E   O V E R");
     refresh();
-    attroff(COLOR_PAIR(5));     // reset color to terminal
+    attroff(COLOR_PAIR(RED_WHITE));     // reset color to terminal
 
     nodelay(stdscr, false);
     getch();
