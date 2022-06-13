@@ -1,31 +1,54 @@
 #include "innerWall.h"
+#include <ncurses.h>
 
 innerWall::innerWall(){
-    wall_array = new int *[WALL_MAX_SIZE];
-    for(int i=0; i<WALL_MAX_SIZE; i++) wall_array[i] = new int[2];
+    currSize = 0;
+    innerWallArray = new int *[INNERWALL_MAX_SIZE];
+    for(int i=0; i<INNERWALL_MAX_SIZE; i++) innerWallArray[i] = new int[2];
 }
 
 innerWall::~innerWall(){
-    for(int i=0; i<WALL_MAX_SIZE; i++) delete[] wall_array[i];
-    delete[] wall_array;
+
+    for(int r=0; r<INNERWALL_MAX_SIZE; r++) delete[] innerWallArray[r];
+    delete[] innerWallArray;
 }
 
 void innerWall::addRowWall(int sz, int y, int start_x){
     for(int x = start_x; x<start_x+sz; x++){
-        wall_array[idx][0] = y;
-        wall_array[idx][1] = x;
-        idx++;
+        innerWallArray[currSize][0] = y;
+        innerWallArray[currSize][1] = x;
+        currSize++;
     }
 }
 
 void innerWall::addColWall(int sz, int start_y, int x){
     for(int y = start_y; y < start_y+sz; y++){
-        wall_array[idx][0] = y;
-        wall_array[idx][1] = x;
-        idx++;
+        innerWallArray[currSize][0] = y;
+        innerWallArray[currSize][1] = x;
+        currSize++;
     }
 }
 
+void innerWall::drawWall(){
+    attron(COLOR_PAIR(BLUE));
+    for(int r=0; r<currSize; r++){
+        move(innerWallArray[r][0], innerWallArray[r][1]);
+        addch(' ');
+    }
+    attroff(COLOR_PAIR(BLUE));
+    refresh();
+}
+
+void innerWall::eraseWall(){
+    attron(COLOR_PAIR(WHITE));
+    for(int r=0; r<currSize; r++) {
+        move(innerWallArray[r][0], innerWallArray[r][1]);
+        addch(' ');
+    }
+    attroff(COLOR_PAIR(WHITE));
+    refresh();
+    currSize = 0;
+}
 
 
 

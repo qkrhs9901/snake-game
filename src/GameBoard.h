@@ -7,21 +7,17 @@
 #ifndef __GAMEBOARD__
 #define __GAMEBOARD__
 
-#define WALL_COLOR 1000
 
 class GameBoard : public Board {
     WINDOW *board_win;
-    int **wallArray;
-    int wallSize;
-    int innerWallSize;
-    
+    int **sideWallArray;
+
 public:
-    GameBoard(int height, int width, int y, int x, int innerWallSize=0);
+    GameBoard(int height, int width, int y, int x);
     ~GameBoard();
 
-    void setWallArray(int** innerWall);
     void drawWall();
-    int** getWallArray() {return wallArray;}
+    int** getSideWallArray() {return sideWallArray;}
 
 };
 
