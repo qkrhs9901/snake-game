@@ -12,7 +12,7 @@
 #include "innerWall.h"
 #include "innerWall.cpp"
 
-int main(int argc, char *argv[]){
+int main(){
     initscr();
     nodelay(stdscr, true);      // getch will not wait until user press a key
     // keypad(stdscr, true);       // keypad to control
@@ -20,43 +20,40 @@ int main(int argc, char *argv[]){
     curs_set(0);                // invisible cursor
     start_color();
     refresh();
-    init_pair(1, COLOR_BLACK, COLOR_WHITE);     // set color as a pair to number 1 (background - WHITE) 
-    init_pair(2, COLOR_BLACK, COLOR_BLUE);      // set color as a pair to number 2 (background - BLUE)
-    init_pair(3, COLOR_BLACK, COLOR_CYAN);      // set color as a pair to number 3 (background - CYAN) 
+    init_pair(WHITE, COLOR_BLACK, COLOR_WHITE);     // set color as a pair to number 1 (background - WHITE) 
+    init_pair(BLUE, COLOR_BLACK, COLOR_BLUE);      // set color as a pair to number 2 (background - BLUE)
+    init_pair(CYAN, COLOR_BLACK, COLOR_CYAN);      // set color as a pair to number 3 (background - CYAN) 
     init_pair(RED, COLOR_BLACK, COLOR_RED);       // set color as a pair to number 4 (background - RED) 
     init_pair(GREEN, COLOR_BLACK, COLOR_GREEN);     // set color as a pair to number 5 (background - GREEN) 
     init_pair(MAGENTA, COLOR_BLACK, COLOR_MAGENTA);       // set color as a pair to number 6 (background - MAGENTA) 
     init_pair(RED_WHITE, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 7 (text - RED / background - WHITE) 
 
 
+    // gameboard
+    GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
+    game.initialize();
+    game.setBkgd(COLOR_PAIR(WHITE));
+    game.addBorder(COLOR_PAIR(WHITE));
+    game.refresh();
+    game.drawWall();
+
     // inner wall
     innerWall wall_1;
     wall_1.addColWall(10, GAMEBOARD_START_Y, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
-    int** innerWall_1 = wall_1.getWallArray();
-    int wall_1_sz = wall_1.getCurrentWallSize();
-
-    // gameboard
-    GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS, wall_1_sz);
-    game.initialize();
-    game.setBkgd(COLOR_PAIR(1));
-    game.addBorder(COLOR_PAIR(1));
-    game.refresh();
-
-    game.setWallArray(innerWall_1);
-    game.drawWall();
+    wall_1.drawWall();
 
     
     // score board
     Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
     score.initialize();
-    score.setBkgd(COLOR_PAIR(1));
+    score.setBkgd(COLOR_PAIR(WHITE));
     score.addBox();
     score.refresh();
 
     // mission board
     Board mission(SCOREBOARD_ROWS, SCOREBOARD_COLS, MISSIONBOARD_POS_Y, MISSIONBOARD_POS_X);
     mission.initialize();
-    mission.setBkgd(COLOR_PAIR(1));
+    mission.setBkgd(COLOR_PAIR(WHITE));
     mission.addBox();
     mission.refresh();
 

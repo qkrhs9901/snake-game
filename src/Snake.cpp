@@ -81,10 +81,10 @@ void Snake::movesnake() {
 
     if (!get) {
         attroff(COLOR_PAIR(GREEN));
-        attron(COLOR_PAIR(1));
+        attron(COLOR_PAIR(WHITE));
         move(snake[snake.size()-1].y, snake[snake.size()-1].x);
         addch(' ');
-        attroff(COLOR_PAIR(1));
+        attroff(COLOR_PAIR(WHITE));
         refresh();
         snake.pop_back();
     }

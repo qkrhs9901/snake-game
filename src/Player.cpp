@@ -74,7 +74,7 @@ void Player::setCurrentLoc(const int current_loc) {
 
 void Player::setBoard() {
 
-    attron(COLOR_PAIR(1));
+    attron(COLOR_PAIR(WHITE));
     move(SCOREBOARD_POS_Y+1, SCOREBOARD_POS_X+1);
     printw("--------CURRENT SCORE--------");
     move(SCOREBOARD_POS_Y+3, SCOREBOARD_POS_X+2);
@@ -88,5 +88,5 @@ void Player::setBoard() {
     move(SCOREBOARD_POS_Y+7, SCOREBOARD_POS_X+2);
     printw("G     : %d", gate_count);
     refresh();
-    attroff(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(WHITE));
 }
