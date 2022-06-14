@@ -36,11 +36,14 @@ int main(){
     game.addBorder(COLOR_PAIR(WHITE));
     game.refresh();
     game.drawWall();
+    int** sideWallArray = game.getSideWallArray();
 
     // inner wall
     innerWall wall_1;
     wall_1.addColWall(10, GAMEBOARD_START_Y, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
     wall_1.drawWall();
+    int** innerWallArray = wall_1.getInnerWallArray();
+    int innerWallSize = wall_1.getCurrentSize();
 
     
     // score board
@@ -60,7 +63,9 @@ int main(){
     Player p;
     p.setBoard();
     
-    Snake s;
+    Snake s(sideWallArray);
+    s.setInnerWall(innerWallSize, innerWallArray);
+    s.setGate();
     s.start();
     
     attron(COLOR_PAIR(RED_WHITE));      // set color 2 to terminal
