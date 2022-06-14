@@ -176,6 +176,7 @@ void Wall::eraseInnerWall(){
     attroff(COLOR_PAIR(WHITE));
     refresh();
     innerWallSize = 0;
+    stuckWallSize = 0;
 }
 
 
