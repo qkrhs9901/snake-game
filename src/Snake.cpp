@@ -104,11 +104,6 @@ void Snake::setGate(){
     }
     gateArray[0][0] = y_1; gateArray[0][1] = x_1;
 
-    // draw first gate
-    attron(COLOR_PAIR(MAGENTA));
-    move(gateArray[0][0], gateArray[0][1]);
-    addch(' ');
-
     // second gate
     int x_2, y_2;
     if(idx_2 >= SIDEWALL_SIZE) {
@@ -122,6 +117,11 @@ void Snake::setGate(){
         gateArray[1][2] = 0;
     }
     gateArray[1][0] = y_2; gateArray[1][1] = x_2;
+
+    // draw first gate
+    attron(COLOR_PAIR(MAGENTA));
+    move(gateArray[0][0], gateArray[0][1]);
+    addch(' ');
 
     // draw second gate
     move(gateArray[1][0], gateArray[1][1]);
@@ -161,18 +161,14 @@ void Snake::enterGate(int inGateIdx){
     moveSnake();
 
     // inGate 제거
-    Board gate_in(1, 1, inGate[0], inGate[1]);
-    gate_in.initialize();
-    gate_in.setBkgd(COLOR_PAIR(BLUE));
-    gate_in.addBorder(COLOR_PAIR(BLUE));
-    gate_in.refresh();
+    attron(COLOR_PAIR(BLUE));
+    move(inGate[0], inGate[1]);
+    addch(' ');
 
      // outGate 제거
-    Board gate_out(1, 1, outGate[0], outGate[1]);
-    gate_out.initialize();
-    gate_out.setBkgd(COLOR_PAIR(BLUE));
-    gate_out.addBorder(COLOR_PAIR(BLUE));
-    gate_out.refresh();
+    move(outGate[0], outGate[1]);
+    addch(' ');
+    attroff(COLOR_PAIR(BLUE));
 
     setGate();
 }
