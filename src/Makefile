@@ -12,13 +12,10 @@ Player : Player.o Player.h Settings.h
 Snake : Snake.o Snake.h Settings.h
 	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) Snake Snake.o $(CURSES)
 
-GameBoard : GameBoard.o GameBoard.h Settings.h
-	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) GameBoard GameBoard.o $(CURSES)
+Wall : Wall.o Wall.h Settings.h
+	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) Wall Wall.o $(CURSES)
 
-InnerWall : innerWall.o innerWall.h Settings.h
-	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) innerWall innerWall.o $(CURSES)
-
-main : main.o Player.o Snake.o GameBoard.o innerWall.o Player.h Board.h GameBoard.h Snake.h innerWall.h Settings.h
+main : main.o Player.o Snake.o Wall.o Player.h Board.h GameBoard.h Snake.h Wall.h Settings.h
 	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) main main.o $(CURSES)
 
 

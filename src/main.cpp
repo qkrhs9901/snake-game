@@ -3,14 +3,13 @@
 #include <vector>
 #include "Board.h"
 #include "GameBoard.h"
-#include "GameBoard.cpp"
 #include "Snake.h"
 #include "Snake.cpp"
 #include "Player.h"
 #include "Player.cpp"
 #include "Settings.h"
-#include "innerWall.h"
-#include "innerWall.cpp"
+#include "Wall.h"
+#include "Wall.cpp"
 
 int main(){
     initscr();
@@ -29,22 +28,24 @@ int main(){
     init_pair(RED_WHITE, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 7 (text - RED / background - WHITE) 
 
 
+    // inner wall
+    Wall wall;
+    wall.addColWall(10, GAMEBOARD_START_Y, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
+    wall.drawSideWall();
+    int** sideWallArray = wall.getSideWallArray();
+    int** innerWallArray = wall.getInnerWallArray();
+    int** stuckWallArray = wall.getStuckWallArray();
+    int innerWallSize = wall.getInnerWallSize();
+    int stuckWallSize = wall.getStuckWallSize();
+
     // gameboard
     GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
     game.initialize();
     game.setBkgd(COLOR_PAIR(WHITE));
     game.addBorder(COLOR_PAIR(WHITE));
     game.refresh();
-    game.drawWall();
-    int** sideWallArray = game.getSideWallArray();
 
-    // inner wall
-    innerWall wall_1;
-    wall_1.addColWall(10, GAMEBOARD_START_Y, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
-    wall_1.drawWall();
-    int** innerWallArray = wall_1.getInnerWallArray();
-    int innerWallSize = wall_1.getCurrentSize();
-
+    wall.drawInnerWall();
     
     // score board
     Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
@@ -65,6 +66,7 @@ int main(){
     
     Snake s(sideWallArray);
     s.setInnerWall(innerWallSize, innerWallArray);
+    s.setStuckWall(stuckWallSize, stuckWallArray);
     s.setGate();
     s.start();
     

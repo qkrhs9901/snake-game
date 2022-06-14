@@ -18,22 +18,28 @@ public:
 
 class Snake {
     int del;
+    int snakeLen;
     char direction, snakepart;
     bool get;
     int** sideWallArray;
     int** innerWallArray = nullptr;
+    int** stuckWallArray = nullptr;
     int innerWallSize = 0;
-    int gateArray[2][2];
+    int stuckWallSize = 0;
+    int gateArray[2][3]; //  0: y_pos / 1: x_pos / 2: side(0) | inner(1) 
 
 public:
     Snake(int** sideWallArray);
     ~Snake();
     void setInnerWall(int sz, int** innerWallArray);
+    void setStuckWall(int sz, int** stuckWallArray);
     void setGate();
 
     bool collision();
-    void enterGate(int inGate);
-    void movesnake(int key);
+    void enterGate(int inGateIdx);
+    void setDirection(int key);
+    void moveSnake();
+    void moveHeadOutGate(int* outGate);
 
     void start();
     vector<Snakepart> snake;

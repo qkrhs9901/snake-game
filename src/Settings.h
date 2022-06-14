@@ -4,8 +4,8 @@
 // keyboard inputs
 #define UP_KEY 'w' | 'W'        // W
 #define DOWN_KEY 's' | 'S'      // S
-#define RIGHT_KEY 'a' | 'A'     // A
-#define LEFT_KEY 'd' | 'D'      // D
+#define LEFT_KEY 'a' | 'A'     // A
+#define RIGHT_KEY 'd' | 'D'      // D
 
 // board size
 #define GAMEBOARD_DIM 22
@@ -18,7 +18,6 @@
 #define GAMEBOARD_END_X (GAMEBOARD_POS+GAMEBOARD_COLS)
 #define GAMEBOARD_END_Y (GAMEBOARD_POS+GAMEBOARD_ROWS)
 #define SIDEWALL_SIZE (GAMEBOARD_COLS*2 + GAMEBOARD_ROWS*2)
-
 
 #define SCOREBOARD_DIM 10
 #define SCOREBOARD_ROWS (SCOREBOARD_DIM)
