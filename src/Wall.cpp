@@ -62,38 +62,52 @@ Wall::~Wall(){
     delete[] stuckWallArray;
 }
 
-void Wall::addRowWall(int sz, int y, int start_x){
+void Wall::addRowWall(int y, int start_x, int end_x){
+
+    if(start_x > end_x){ // 오른쪽에서 왼쪽으로 wall을 추가하려는 경우
+        int tmp = end_x;
+        end_x = start_x; 
+        start_x = tmp;
+    }
+
     if(start_x == GAMEBOARD_START_X){
         stuckWallArray[stuckWallSize][0] = y;
         stuckWallArray[stuckWallSize][1] = start_x - 1;
         stuckWallSize++;
     }
-    if(start_x + sz == GAMEBOARD_END_X){
+    if(end_x == GAMEBOARD_END_X){
         stuckWallArray[stuckWallSize][0] = y;
-        stuckWallArray[stuckWallSize][1] = start_x + sz;
+        stuckWallArray[stuckWallSize][1] = end_x;
         stuckWallSize++;
     }
 
-    for(int x = start_x; x<start_x+sz; x++){
+    for(int x = start_x; x<end_x; x++){
         innerWallArray[innerWallSize][0] = y;
         innerWallArray[innerWallSize][1] = x;
         innerWallSize++;
     }
 }
 
-void Wall::addColWall(int sz, int start_y, int x){
+void Wall::addColWall(int start_y, int end_y, int x){
+
+    if(start_y > end_y){ // 아래에서 위로 wall을 추가하려는 경우
+        int tmp = end_y;
+        end_y = start_y; 
+        start_y = tmp;
+    }
+
     if(start_y == GAMEBOARD_START_Y){
         stuckWallArray[stuckWallSize][0] = start_y - 1;
         stuckWallArray[stuckWallSize][1] = x;
         stuckWallSize++;
     }
-    if(start_y + sz == GAMEBOARD_END_Y){
-        stuckWallArray[stuckWallSize][0] = start_y + sz;
+    if(end_y == GAMEBOARD_END_Y){
+        stuckWallArray[stuckWallSize][0] = end_y;
         stuckWallArray[stuckWallSize][1] = x;
         stuckWallSize++;
     }
 
-    for(int y = start_y; y < start_y+sz; y++){
+    for(int y = start_y; y < end_y; y++){
         innerWallArray[innerWallSize][0] = y;
         innerWallArray[innerWallSize][1] = x;
         innerWallSize++;

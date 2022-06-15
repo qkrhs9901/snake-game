@@ -30,7 +30,8 @@ int main(){
 
     // inner wall
     Wall wall;
-    wall.addColWall(10, GAMEBOARD_START_Y, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
+    wall.addColWall(GAMEBOARD_START_Y, GAMEBOARD_START_Y+7, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
+    wall.addColWall(GAMEBOARD_END_Y, GAMEBOARD_END_Y-7, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
     wall.drawSideWall();
     int** sideWallArray = wall.getSideWallArray();
     int** innerWallArray = wall.getInnerWallArray();
