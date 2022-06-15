@@ -38,5 +38,7 @@
 #define GREEN 5
 #define MAGENTA 6
 #define RED_WHITE 7
+#define RED_YELLOW 8
+#define GREEN_YELLOW 9
 
 #endif

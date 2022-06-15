@@ -26,6 +26,8 @@ int main(){
     init_pair(GREEN, COLOR_BLACK, COLOR_GREEN);     // set color as a pair to number 5 (background - GREEN) 
     init_pair(MAGENTA, COLOR_BLACK, COLOR_MAGENTA);       // set color as a pair to number 6 (background - MAGENTA) 
     init_pair(RED_WHITE, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 7 (text - RED / background - WHITE) 
+    init_pair(RED_YELLOW, COLOR_RED, COLOR_YELLOW);       // set color as a pair to number 7 (text - RED / background - YELLOW) 
+    init_pair(GREEN_YELLOW, COLOR_GREEN, COLOR_YELLOW);       // set color as a pair to number 7 (text - GREEN / background - YELLOW) 
 
 
     // inner wall
@@ -80,6 +82,3 @@ int main(){
 
     return 0;
 }
-
-
-

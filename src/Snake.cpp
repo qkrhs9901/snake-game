@@ -56,7 +56,7 @@ Snake::Snake(int** sideWallArray) : sideWallArray(sideWallArray){
 
     // body
     attron(COLOR_PAIR(GREEN));
-    for (int i = 1; i <  snake.size(); i++) {
+    for (int i = 1; i < snakeLen; i++) {
         move(snake[i].y, snake[i].x);
         addch(snakepart);
     } 
@@ -276,7 +276,7 @@ void Snake::moveHeadOutGate(int* outGate) {
 
     if (!get) {
         attron(COLOR_PAIR(WHITE));
-        move(snake[snake.size()-1].y, snake[snake.size()-1].x);
+        move(snake[snakeLen-1].y, snake[snakeLen-1].x);
         addch(' ');
         attroff(COLOR_PAIR(WHITE));
         refresh();
@@ -304,14 +304,15 @@ void Snake::putfood() {
     while (1) {
         int tmpx1 = rand() % GAMEBOARD_END_X + 1;          // food
         int tmpy1 = rand() % GAMEBOARD_END_Y + 1;
-        for (int i = 0; i < snake.size(); i++) {
+        for (int i = 0; i < snakeLen; i++) {
             if (snake[i].x == tmpx1 && snake[i].y == tmpy1) {
                 continue;
             }
         }
-        for(int i=0; i<innerWallSize; i++){
+        bool cnt = false;
+        for(int i=0; i<innerWallSize && !cnt; i++){
             if(snake[0].x == innerWallArray[i][1] && snake[0].y == innerWallArray[i][0]) {
-                continue;
+                cnt = true;
             }
         }
         if (tmpx1 >= GAMEBOARD_END_X-1 || tmpx1 <= GAMEBOARD_START_X || tmpy1 >= GAMEBOARD_END_Y-1 || tmpy1 <= GAMEBOARD_START_Y) {
@@ -332,19 +333,21 @@ void Snake::putpoison() {
     while (1) {
         int tmpx2 = rand() % GAMEBOARD_END_X + 1;          // poison
         int tmpy2 = rand() % GAMEBOARD_END_Y + 1;
-        for (int i = 0; i < snake.size(); i++) {
+        for (int i = 0; i < snakeLen; i++) {
             if (snake[i].x == tmpx2 && snake[i].y == tmpy2) {
                 continue;
             }
         }
-        for(int i=0; i<innerWallSize; i++){
+        bool cnt = false;
+        for(int i=0; i<innerWallSize && !cnt; i++){
             if(snake[0].x == innerWallArray[i][1] && snake[0].y == innerWallArray[i][0]) {
-                continue;
+                cnt = true;
             }
         }
         if (tmpx2 >= GAMEBOARD_END_X-1 || tmpx2 <= GAMEBOARD_START_X || tmpy2 >= GAMEBOARD_END_Y-1 || tmpy2 <= GAMEBOARD_START_Y) {
             continue;
         }
+        
         poison.x = tmpx2;   // poison
         poison.y = tmpy2;
         break;
@@ -377,7 +380,7 @@ bool Snake::collision() {
     }
 
     // head가 body와 충돌
-    for (int i = 2; i < snake.size(); i++) {
+    for (int i = 2; i < snakeLen; i++) {
         if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
             return true;
         }
@@ -385,8 +388,9 @@ bool Snake::collision() {
 
     if (snake[0].x == food.x && snake[0].y == food.y) {
         get = true;
+        snakeLen++;
         play->growthIncrease();
-        play->setCurrentSize(snake.size()+1);
+        play->setCurrentSize(snakeLen);
         play->setBoard();
         putfood();
         move(GAMEBOARD_END_Y-1, 0);
@@ -401,7 +405,7 @@ bool Snake::collision() {
     if (snake[0].x == poison.x && snake[0].y == poison.y) {
         bad = true;
         play->poisonIncrease();
-        play->setCurrentSize(snake.size()-1);
+        play->setCurrentSize(snakeLen-1);
         play->setBoard();
         putpoison();
         move(GAMEBOARD_END_Y-1, 0);
@@ -447,12 +451,12 @@ void Snake::setDirection(int key){
 }
 
 void Snake::moveSnake() {
-    play->setCurrentSize(snake.size());
+    play->setCurrentSize(snakeLen);
     play->setBoard();
 
     if (!get) {
         attron(COLOR_PAIR(WHITE));
-        move(snake[snake.size()-1].y, snake[snake.size()-1].x);
+        move(snake[snakeLen-1].y, snake[snakeLen-1].x);
         addch(' ');
         attroff(COLOR_PAIR(WHITE));
         refresh();
@@ -461,7 +465,8 @@ void Snake::moveSnake() {
 
     if (bad) {
         attron(COLOR_PAIR(WHITE));
-        move(snake[snake.size()-1].y, snake[snake.size()-1].x);
+        snakeLen--;
+        move(snake[snakeLen-1].y, snake[snakeLen-1].x);
         addch(' ');
         attroff(COLOR_PAIR(WHITE));
         refresh();
@@ -496,8 +501,8 @@ void Snake::moveSnake() {
 
 void Snake::start() {
     while (1) {
-        if (collision() || snake.size() == 3) {
-            play->setCurrentSize(snake.size());
+        if (collision() || snakeLen == 3) {
+            play->setCurrentSize(snakeLen);
             play->setBoard();
             break;
         }
