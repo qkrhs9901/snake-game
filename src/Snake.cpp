@@ -85,9 +85,9 @@ void Snake::setGate(){
                 if(sideWallArray[idx_2][0] == stuckWallArray[i][0] && sideWallArray[idx_2][1] == stuckWallArray[i][1])
                     break;
             }
-            if(i == stuckWallSize) break; // idx_1이 stuckWall이 아니면 탈출
+            if(i == stuckWallSize) break; 
         }
-        else break; // idx_1이 sideWall이 아니면 탈출
+        else break;
     }
 
     // first gate
@@ -151,14 +151,12 @@ void Snake::enterGate(int inGateIdx){
     }   
 
     moveHeadOutGate(outGate); // head의 위치를 outGate로 옮김
-    usleep(del);
 
-    for(int i=0; i<snakeLen-1; i++){ // snakeLen - 1만큼 move
-        moveSnake();
+    // body가 gate 통과
+    for(int i=0; i<snakeLen; i++){
         usleep(del);
+        moveSnake();
     }
-    
-    moveSnake();
 
     // inGate 제거
     attron(COLOR_PAIR(BLUE));
@@ -170,6 +168,7 @@ void Snake::enterGate(int inGateIdx){
     addch(' ');
     attroff(COLOR_PAIR(BLUE));
 
+    // new gate 생성
     setGate();
 }
 
@@ -186,7 +185,6 @@ void Snake::moveHeadOutGate(int* outGate) {
     
     snake.insert(snake.begin(), Snakepart(outGate[1], outGate[0]));
 
-
     // draw head
     attron(COLOR_PAIR(RED));
     move(snake[0].y, snake[0].x);
@@ -202,33 +200,33 @@ void Snake::moveHeadOutGate(int* outGate) {
 }
 
 bool Snake::collision() {
-    if ((snake[0].x == GAMEBOARD_START_X-1 || snake[0].x == GAMEBOARD_END_X) || (snake[0].y == GAMEBOARD_START_Y -1 || snake[0].y == GAMEBOARD_END_Y)) {
-        if(snake[0].x == gateArray[0][1] && snake[0].y == gateArray[0][0]){
-            enterGate(0);
-            return false;
-        }
-        else if(snake[0].x == gateArray[1][1] && snake[0].y == gateArray[1][0]){
-            enterGate(1);
-            return false;
-        }
-        return true;
+    // head가 gate에 진입
+    if(snake[0].x == gateArray[0][1] && snake[0].y == gateArray[0][0]){ // inGate가 0일 때
+        enterGate(0);
+        return false;
+    }
+    else if(snake[0].x == gateArray[1][1] && snake[0].y == gateArray[1][0]){ // inGate가 1일 때
+        enterGate(1);
+        return false;
     }
 
+    // head가 sideWall과 충돌
+    if ((snake[0].x == GAMEBOARD_START_X-1 || snake[0].x == GAMEBOARD_END_X) || (snake[0].y == GAMEBOARD_START_Y -1 || snake[0].y == GAMEBOARD_END_Y))
+        return true;
+    
+    // head가 innerWall과 충돌
     for(int i=0; i<innerWallSize; i++){
-        if(snake[0].x == innerWallArray[i][1] && snake[0].y == innerWallArray[i][0]){
-            if(snake[0].x == gateArray[0][1] && snake[0].y == gateArray[0][0]){
-                return false;
-            }
-            else if(snake[0].x == gateArray[1][1] && snake[0].y == gateArray[1][0]){
-                return false;
-            }
+        if(snake[0].x == innerWallArray[i][1] && snake[0].y == innerWallArray[i][0])
+            return true;
+    }
+
+    // head가 body와 충돌
+    for (int i = 2; i < snake.size(); i++) {
+        if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
             return true;
         }
     }
 
-    for (int i = 2; i < snake.size(); i++) {
-        
-    }
     return false;
 }
 
