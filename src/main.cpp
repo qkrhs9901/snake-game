@@ -8,8 +8,10 @@
 #include "Player.h"
 #include "Player.cpp"
 #include "Settings.h"
+#include "Wall.h"
+#include "Wall.cpp"
 
-int main(int argc, char *argv[]){
+int main(){
     initscr();
     nodelay(stdscr, true);      // getch will not wait until user press a key
     // keypad(stdscr, true);       // keypad to control
@@ -17,69 +19,63 @@ int main(int argc, char *argv[]){
     curs_set(0);                // invisible cursor
     start_color();
     refresh();
-    init_pair(1, COLOR_BLACK, COLOR_WHITE);     // set color as a pair to number 5 (text and background) - WHITE
-    init_pair(2, COLOR_BLACK, COLOR_BLUE);      // set color as a pair to number 5 (text and background) - BLUE
-    init_pair(3, COLOR_BLACK, COLOR_CYAN);      // set color as a pair to number 5 (text and background) - CYAN
-    init_pair(5, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 5 (text and background) - RED
-    
+    init_pair(WHITE, COLOR_BLACK, COLOR_WHITE);     // set color as a pair to number 1 (background - WHITE) 
+    init_pair(BLUE, COLOR_BLACK, COLOR_BLUE);      // set color as a pair to number 2 (background - BLUE)
+    init_pair(CYAN, COLOR_BLACK, COLOR_CYAN);      // set color as a pair to number 3 (background - CYAN) 
+    init_pair(RED, COLOR_BLACK, COLOR_RED);       // set color as a pair to number 4 (background - RED) 
+    init_pair(GREEN, COLOR_BLACK, COLOR_GREEN);     // set color as a pair to number 5 (background - GREEN) 
+    init_pair(MAGENTA, COLOR_BLACK, COLOR_MAGENTA);       // set color as a pair to number 6 (background - MAGENTA) 
+    init_pair(RED_WHITE, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 7 (text - RED / background - WHITE) 
+
+
+    // inner wall
+    Wall wall;
+    wall.addColWall(GAMEBOARD_START_Y, GAMEBOARD_START_Y+7, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
+    wall.addColWall(GAMEBOARD_END_Y, GAMEBOARD_END_Y-7, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
+    wall.drawSideWall();
+    int** sideWallArray = wall.getSideWallArray();
+    int** innerWallArray = wall.getInnerWallArray();
+    int** stuckWallArray = wall.getStuckWallArray();
+    int innerWallSize = wall.getInnerWallSize();
+    int stuckWallSize = wall.getStuckWallSize();
 
     // gameboard
     GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
     game.initialize();
-    game.setBkgd(COLOR_PAIR(1));
-    game.addBorder(COLOR_PAIR(2));
+    game.setBkgd(COLOR_PAIR(WHITE));
+    game.addBorder(COLOR_PAIR(WHITE));
     game.refresh();
 
-    // gameboard's edges
-    Board topEdgeL(1, 1, GAMEBOARD_POS, GAMEBOARD_POS);
-    topEdgeL.initialize();
-    topEdgeL.setBkgd(COLOR_PAIR(3));
-    topEdgeL.addBorder(COLOR_PAIR(3));
-    topEdgeL.refresh();
-
-    Board topEdgeR(1, 1, GAMEBOARD_POS, GAMEBOARD_POS+GAMEBOARD_COLS-1);
-    topEdgeR.initialize();
-    topEdgeR.setBkgd(COLOR_PAIR(3));
-    topEdgeR.addBorder(COLOR_PAIR(3));
-    topEdgeR.refresh();
-
-    Board btmEdgeL(1, 1, GAMEBOARD_POS+GAMEBOARD_ROWS-1, GAMEBOARD_POS);
-    btmEdgeL.initialize();
-    btmEdgeL.setBkgd(COLOR_PAIR(3));
-    btmEdgeL.addBorder(COLOR_PAIR(3));
-    btmEdgeL.refresh();
-
-    Board btmEdgeR(1, 1, GAMEBOARD_POS+GAMEBOARD_ROWS-1, GAMEBOARD_POS+GAMEBOARD_COLS-1);
-    btmEdgeR.initialize();
-    btmEdgeR.setBkgd(COLOR_PAIR(3));
-    btmEdgeR.addBorder(COLOR_PAIR(3));
-    btmEdgeR.refresh();
-
+    wall.drawInnerWall();
+    
     // score board
     Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
     score.initialize();
-    score.setBkgd(COLOR_PAIR(1));
+    score.setBkgd(COLOR_PAIR(WHITE));
     score.addBox();
     score.refresh();
 
     // mission board
     Board mission(SCOREBOARD_ROWS, SCOREBOARD_COLS, MISSIONBOARD_POS_Y, MISSIONBOARD_POS_X);
     mission.initialize();
-    mission.setBkgd(COLOR_PAIR(1));
+    mission.setBkgd(COLOR_PAIR(WHITE));
     mission.addBox();
     mission.refresh();
 
     Player p;
     p.setBoard();
     
-    Snake s;
+    Snake s(sideWallArray);
+    s.setInnerWall(innerWallSize, innerWallArray);
+    s.setStuckWall(stuckWallSize, stuckWallArray);
+    s.setGate();
     s.start();
     
-    attron(COLOR_PAIR(5));      // set color 2 to terminal
+    attron(COLOR_PAIR(RED_WHITE));      // set color 2 to terminal
     move(14, 18);
     printw("G A M E   O V E R");
     refresh();
-    attroff(COLOR_PAIR(5));     // reset color to terminal
+    attroff(COLOR_PAIR(RED_WHITE));     // reset color to terminal
 
     nodelay(stdscr, false);
     getch();

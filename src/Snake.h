@@ -2,6 +2,7 @@
 #include <vector>
 #include <ncurses.h>
 #include <cstdlib>
+#include "Board.h"
 using namespace std;
 
 // MACRO
@@ -17,14 +18,32 @@ public:
 
 class Snake {
     int del;
+    int snakeLen;
     char direction, snakepart;
     bool get;
+    int** sideWallArray;
+    int** innerWallArray = nullptr;
+    int** stuckWallArray = nullptr;
+    int innerWallSize = 0;
+    int stuckWallSize = 0;
+    int gateArray[2][3]; //  0: y_pos / 1: x_pos / 2: side(0) | inner(1) 
+
 public:
-    Snake();
+    Snake(int** sideWallArray);
     ~Snake();
-    void start();
+    void setInnerWall(int sz, int** innerWallArray);
+    void setStuckWall(int sz, int** stuckWallArray);
+
+    void setGate();
+    void enterGate(int inGateIdx);
+    void setDirectionInnerGate(int currDirection, int* checkDirection);
+    void moveHeadOutGate(int* outGate);
+
     bool collision();
-    void movesnake();
+    void setDirection(int key);
+    void moveSnake();
+
+    void start();
     vector<Snakepart> snake;
 };
 
