@@ -33,13 +33,15 @@ public:
     ~Snake();
     void setInnerWall(int sz, int** innerWallArray);
     void setStuckWall(int sz, int** stuckWallArray);
+
     void setGate();
+    void enterGate(int inGateIdx);
+    void setDirectionInnerGate(int currDirection, int* checkDirection);
+    void moveHeadOutGate(int* outGate);
 
     bool collision();
-    void enterGate(int inGateIdx);
     void setDirection(int key);
     void moveSnake();
-    void moveHeadOutGate(int* outGate);
 
     void start();
     vector<Snakepart> snake;

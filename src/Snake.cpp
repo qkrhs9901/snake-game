@@ -135,22 +135,67 @@ void Snake::enterGate(int inGateIdx){
     int *inGate = gateArray[inGateIdx];
     int *outGate = gateArray[outGateIdx];
 
-    if(outGate[2] == 0){ // outGate가 sideWall에 있다면
-        if(outGate[0] == GAMEBOARD_START_Y - 1){ // topWall
+    // outGate가 sideWall에 있다면
+    if(outGate[2] == 0){ 
+        if(outGate[0] == GAMEBOARD_START_Y - 1){ // upWall
             direction = 'd';
         }
         else if(outGate[1] == GAMEBOARD_END_X){ // rightWall
             direction = 'l';
         }
-        else if(outGate[0] == GAMEBOARD_END_Y){ // bottomWall
+        else if(outGate[0] == GAMEBOARD_END_Y){ // downWall
             direction = 'u';
         }
         else{ // leftWall
             direction = 'r';
         }
     }   
+    // outGate가 innerWall에 있다면
+    else{ 
+        int checkDiretion[4] = {0,0,0,0}; 
+        // <val> 0: 열려있음 | 1: 막혀있음 
+        // <idx> 0: top / 1: right / 2: bottom / 3: left
 
-    moveHeadOutGate(outGate); // head의 위치를 outGate로 옮김
+        // 만약 gate가 sideWall과 붙어있으면 막혀있는 부분이 생김
+        if(outGate[0] == GAMEBOARD_START_Y) checkDiretion[0] = 1;
+        else if(outGate[0] == GAMEBOARD_END_Y) checkDiretion[2] = 1;
+        if(outGate[1] == GAMEBOARD_START_X) checkDiretion[3] = 1;
+        else if(outGate[1] == GAMEBOARD_END_X - 1) checkDiretion[1] = 1;
+
+        // innerWallArray를 순회하며 gate를 막고 있는 방향 체크
+        for(int i=0; i<innerWallSize; i++){
+            int y = innerWallArray[i][0];
+            int x = innerWallArray[i][1];
+
+            if(y == outGate[0] - 1 && x == outGate[1]) checkDiretion[0] = 1; // up
+            else if(y == outGate[0] && x == outGate[1] + 1) checkDiretion[1] = 1; // right
+            else if(y == outGate[0] + 1 && x == outGate[1]) checkDiretion[2] = 1; // down
+            else if(y == outGate[0] && x == outGate[1] - 1) checkDiretion[3] = 1; // left
+        }
+        
+        // setDirectionInnerGate에서 막혀 있는 방향을 파악하여 진행방향 변경 혹은 유지
+        switch (direction)
+        {
+        case 'u': // inGate에 up 방향으로 들어왔을 때
+            setDirectionInnerGate(0, checkDiretion); 
+            break;
+        case 'r': // inGate에 right 방향으로 들어왔을 때
+            setDirectionInnerGate(1, checkDiretion);
+            break;
+        case 'd': // inGate에 down 방향으로 들어왔을 때
+            setDirectionInnerGate(2, checkDiretion);
+            break;
+        case 'l': // inGate에 left 방향으로 들어왔을 때
+            setDirectionInnerGate(1, checkDiretion);
+            break;
+        
+        default:
+            break;
+        }
+    }
+
+    // head의 위치를 outGate로 이동
+    moveHeadOutGate(outGate); 
 
     // body가 gate 통과
     for(int i=0; i<snakeLen; i++){
@@ -170,6 +215,37 @@ void Snake::enterGate(int inGateIdx){
 
     // new gate 생성
     setGate();
+}
+
+void Snake::setDirectionInnerGate(int currDirection, int* checkDirection){  
+    int newDirection;
+
+    if(checkDirection[currDirection] != 0) {// 현재 진행방향이 닫혀 있는 상태라면
+        for(int i=0; i<4; i++){ // 나머지 방향에서 열려 있는 방향을 찾음
+            if(i == currDirection) continue;
+            if(checkDirection[i] == 0){
+                newDirection = i;
+                break;
+            }
+        }
+    }
+    else newDirection = currDirection;
+
+    switch (newDirection)
+    {
+    case 0:
+        direction = 'u';
+        break;
+    case 1:
+        direction = 'r';
+        break;
+    case 2:
+        direction = 'd';
+        break;
+    case 3:
+        direction = 'l';
+        break;
+    }
 }
 
 void Snake::moveHeadOutGate(int* outGate) {
@@ -282,7 +358,6 @@ void Snake::moveSnake() {
         snake.insert(snake.begin(), Snakepart(snake[0].x, snake[0].y+1));
     }
 
-
     // draw head
     attron(COLOR_PAIR(RED));
     move(snake[0].y, snake[0].x);
@@ -296,7 +371,6 @@ void Snake::moveSnake() {
     refresh();
     attroff(COLOR_PAIR(GREEN));
 }
-
 
 void Snake::start() {
     while (1) {
