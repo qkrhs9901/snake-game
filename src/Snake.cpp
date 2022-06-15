@@ -269,7 +269,7 @@ void Snake::moveHeadOutGate(int* outGate) {
 
     if (!get) {
         attron(COLOR_PAIR(WHITE));
-        move(snake[snake.size()-1].y, snake[snake.size()-1].x);
+        move(snake[snakeLen-1].y, snake[snakeLen-1].x);
         addch(' ');
         attroff(COLOR_PAIR(WHITE));
         refresh();
@@ -293,15 +293,27 @@ void Snake::moveHeadOutGate(int* outGate) {
 }
 
 void Snake::putfood() {
-    attron(COLOR_PAIR(WHITE));
     while (1) {
+        bool stop = false;
         int tmpx1 = rand() % GAMEBOARD_END_X + 1;          // food
         int tmpy1 = rand() % GAMEBOARD_END_Y + 1;
-        for (int i = 0; i < snake.size(); i++) {
+        for (int i = 0; i < snakeLen; i++) {
             if (snake[i].x == tmpx1 && snake[i].y == tmpy1) {
-                continue;
+                stop = true;
+                break;
             }
         }
+
+        if(stop) continue;
+
+        for(int i=0; i<innerWallSize; i++){
+            if(innerWallArray[i][0] == tmpy1 && innerWallArray[i][1] == tmpx1){
+                stop = true;
+                break;
+            }
+        }
+        if(stop) continue;
+
         if (tmpx1 >= GAMEBOARD_END_X-1 || tmpx1 <= GAMEBOARD_START_X || tmpy1 >= GAMEBOARD_END_Y-1 || tmpy1 <= GAMEBOARD_START_Y) {
             continue;
         }
@@ -309,22 +321,35 @@ void Snake::putfood() {
         food.y = tmpy1;
         break;
     }
+
+    attron(COLOR_PAIR(RED_YELLOW));
     move(food.y, food.x);
     addch(goodF);
-    attroff(COLOR_PAIR(WHITE));
+    attroff(COLOR_PAIR(RED_YELLOW));
     refresh();
 }
 
 void Snake::putpoison() {
-    attron(COLOR_PAIR(WHITE));
     while (1) {
+        bool stop = false;
         int tmpx2 = rand() % GAMEBOARD_END_X + 1;          // poison
         int tmpy2 = rand() % GAMEBOARD_END_Y + 1;
-        for (int i = 0; i < snake.size(); i++) {
+        for (int i = 0; i < snakeLen; i++) {
             if (snake[i].x == tmpx2 && snake[i].y == tmpy2) {
-                continue;
+                stop = true;
+                break;
             }
         }
+
+        if(stop) continue;
+
+        for(int i=0; i<innerWallSize; i++){
+            if(innerWallArray[i][0] == tmpy2 && innerWallArray[i][1] == tmpx2){
+                stop = true;
+                break;
+            }
+        }
+
         if (tmpx2 >= GAMEBOARD_END_X-1 || tmpx2 <= GAMEBOARD_START_X || tmpy2 >= GAMEBOARD_END_Y-1 || tmpy2 <= GAMEBOARD_START_Y) {
             continue;
         }
@@ -332,9 +357,11 @@ void Snake::putpoison() {
         poison.y = tmpy2;
         break;
     }
+
+    attron(COLOR_PAIR(GREEN_YELLOW));
     move(poison.y, poison.x);
     addch(badF);
-    attroff(COLOR_PAIR(WHITE));
+    attroff(COLOR_PAIR(GREEN_YELLOW));
     refresh();
 }
 
@@ -360,7 +387,7 @@ bool Snake::collision() {
     }
 
     // head가 body와 충돌
-    for (int i = 2; i < snake.size(); i++) {
+    for (int i = 2; i < snakeLen; i++) {
         if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
             return true;
         }
@@ -368,6 +395,7 @@ bool Snake::collision() {
 
     if (snake[0].x == food.x && snake[0].y == food.y) {
         get = true;
+        snakeLen++;
         putfood();
         // play.growthIncrease();
         move(GAMEBOARD_END_Y-1, 0);
@@ -429,7 +457,7 @@ void Snake::moveSnake() {
 
     if (!get) {
         attron(COLOR_PAIR(WHITE));
-        move(snake[snake.size()-1].y, snake[snake.size()-1].x);
+        move(snake[snakeLen-1].y, snake[snakeLen-1].x);
         addch(' ');
         attroff(COLOR_PAIR(WHITE));
         refresh();
@@ -438,7 +466,8 @@ void Snake::moveSnake() {
 
     if (bad) {
         attron(COLOR_PAIR(WHITE));
-        move(snake[snake.size()-1].y, snake[snake.size()-1].x);
+        snakeLen--;
+        move(snake[snakeLen-1].y, snake[snakeLen-1].x);
         addch(' ');
         attroff(COLOR_PAIR(WHITE));
         refresh();
@@ -472,7 +501,7 @@ void Snake::moveSnake() {
 
 void Snake::start() {
     while (1) {
-        if (collision() || snake.size() == 1) {
+        if (collision() || snakeLen == 2) {
             break;
         }
         int tmp = getch();
