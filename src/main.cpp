@@ -61,9 +61,6 @@ int main(){
     mission.setBkgd(COLOR_PAIR(WHITE));
     mission.addBox();
     mission.refresh();
-
-    Player p;
-    p.setBoard();
     
     Snake s(sideWallArray);
     s.setInnerWall(innerWallSize, innerWallArray);

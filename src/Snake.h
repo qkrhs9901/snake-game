@@ -20,7 +20,11 @@ class Snake {
     int del;
     int snakeLen;
     char direction, snakepart;
-    bool get;
+    char goodF, badF;
+    Snakepart food;
+    Snakepart poison;
+    bool get, bad;
+
     int** sideWallArray;
     int** innerWallArray = nullptr;
     int** stuckWallArray = nullptr;
@@ -42,6 +46,9 @@ public:
     bool collision();
     void setDirection(int key);
     void moveSnake();
+
+    void putfood();
+    void putpoison();
 
     void start();
     vector<Snakepart> snake;

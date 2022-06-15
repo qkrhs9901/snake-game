@@ -5,6 +5,7 @@
 #include <time.h>
 #include "Snake.h"
 #include "Settings.h"
+#include "Player.h"
 
 Snakepart::Snakepart(int col, int row) {
     x = col;
@@ -22,10 +23,25 @@ Snake::Snake(int** sideWallArray) : sideWallArray(sideWallArray){
     snakepart=' ';
     del = 110000;
     get = false;
+    bad = false;
     snakeLen = 5;
+
+    Player play;
+    play.setBoard();
+
     for (int i = 0; i < snakeLen; i++) {
         snake.push_back(Snakepart(40+i, 10));
     }
+
+    goodF = 'G';
+    badF = 'P';
+    food.x = 0;
+    food.y = 0;
+    poison.x = 0;
+    poison.y = 0;
+    srand(time(0));
+    putfood();
+    putpoison();
 
     // head
     attron(COLOR_PAIR(RED));
@@ -42,6 +58,7 @@ Snake::Snake(int** sideWallArray) : sideWallArray(sideWallArray){
     refresh();
     attroff(COLOR_PAIR(GREEN));
 }
+
 Snake::~Snake() {}
 
 void Snake::setInnerWall(int sz, int** innerWallArray){
@@ -275,6 +292,52 @@ void Snake::moveHeadOutGate(int* outGate) {
     attroff(COLOR_PAIR(GREEN));
 }
 
+void Snake::putfood() {
+    attron(COLOR_PAIR(WHITE));
+    while (1) {
+        int tmpx1 = rand() % GAMEBOARD_END_X + 1;          // food
+        int tmpy1 = rand() % GAMEBOARD_END_Y + 1;
+        for (int i = 0; i < snake.size(); i++) {
+            if (snake[i].x == tmpx1 && snake[i].y == tmpy1) {
+                continue;
+            }
+        }
+        if (tmpx1 >= GAMEBOARD_END_X-1 || tmpx1 <= GAMEBOARD_START_X || tmpy1 >= GAMEBOARD_END_Y-1 || tmpy1 <= GAMEBOARD_START_Y) {
+            continue;
+        }
+        food.x = tmpx1;     // food
+        food.y = tmpy1;
+        break;
+    }
+    move(food.y, food.x);
+    addch(goodF);
+    attroff(COLOR_PAIR(WHITE));
+    refresh();
+}
+
+void Snake::putpoison() {
+    attron(COLOR_PAIR(WHITE));
+    while (1) {
+        int tmpx2 = rand() % GAMEBOARD_END_X + 1;          // poison
+        int tmpy2 = rand() % GAMEBOARD_END_Y + 1;
+        for (int i = 0; i < snake.size(); i++) {
+            if (snake[i].x == tmpx2 && snake[i].y == tmpy2) {
+                continue;
+            }
+        }
+        if (tmpx2 >= GAMEBOARD_END_X-1 || tmpx2 <= GAMEBOARD_START_X || tmpy2 >= GAMEBOARD_END_Y-1 || tmpy2 <= GAMEBOARD_START_Y) {
+            continue;
+        }
+        poison.x = tmpx2;   // poison
+        poison.y = tmpy2;
+        break;
+    }
+    move(poison.y, poison.x);
+    addch(badF);
+    attroff(COLOR_PAIR(WHITE));
+    refresh();
+}
+
 bool Snake::collision() {
     // head가 gate에 진입
     if(snake[0].x == gateArray[0][1] && snake[0].y == gateArray[0][0]){ // inGate가 0일 때
@@ -301,6 +364,31 @@ bool Snake::collision() {
         if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
             return true;
         }
+    }
+
+    if (snake[0].x == food.x && snake[0].y == food.y) {
+        get = true;
+        putfood();
+        // play.growthIncrease();
+        move(GAMEBOARD_END_Y-1, 0);
+        // if (play.getScore()%100 == 0) {
+        //     del -= 10000;
+        // }
+
+    } else {
+        get = false;
+    }
+
+    if (snake[0].x == poison.x && snake[0].y == poison.y) {
+        bad = true;
+        putpoison();
+        // play.poisonIncrease();
+        move(GAMEBOARD_END_Y-1, 0);
+        // if (play.getScore()%100 == 0) {
+        //     del -= 10000;
+        // }
+    } else {
+        bad = false;
     }
 
     return false;
@@ -347,6 +435,16 @@ void Snake::moveSnake() {
         refresh();
         snake.pop_back();
     }
+
+    if (bad) {
+        attron(COLOR_PAIR(WHITE));
+        move(snake[snake.size()-1].y, snake[snake.size()-1].x);
+        addch(' ');
+        attroff(COLOR_PAIR(WHITE));
+        refresh();
+        snake.pop_back();
+    }
+
     
     if (direction == 'l') {
         snake.insert(snake.begin(), Snakepart(snake[0].x-1, snake[0].y));
@@ -374,7 +472,7 @@ void Snake::moveSnake() {
 
 void Snake::start() {
     while (1) {
-        if (collision()) {
+        if (collision() || snake.size() == 1) {
             break;
         }
         int tmp = getch();
