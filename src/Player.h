@@ -11,6 +11,7 @@ class Player {
     int gate_count;
     int current_loc;
 public:
+    bool check_s, check_gr, check_p, check_ga;
     Player();
     int getCurrentSize();
     void setCurrentSize(const int current_size);
@@ -29,6 +30,7 @@ public:
     int getCurrentLoc();
     void setCurrentLoc(const int current_loc);
     void setBoard();
+    char check(bool c);
 };
 
 #endif

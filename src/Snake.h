@@ -3,6 +3,7 @@
 #include <ncurses.h>
 #include <cstdlib>
 #include "Board.h"
+#include "Player.h"
 using namespace std;
 
 // MACRO
@@ -49,6 +50,8 @@ public:
 
     void putfood();
     void putpoison();
+
+    Player* play;
 
     void start();
     vector<Snakepart> snake;

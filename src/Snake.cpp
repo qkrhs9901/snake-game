@@ -26,8 +26,13 @@ Snake::Snake(int** sideWallArray) : sideWallArray(sideWallArray){
     bad = false;
     snakeLen = 5;
 
-    Player play;
-    play.setBoard();
+    play = new Player();
+    play->setGrowthCount(0);
+    play->setGateCount(0);
+    play->setPoisonCount(0);
+    play->setMaxSize(50);
+    play->setCurrentLoc(1);
+    play->setBoard();
 
     for (int i = 0; i < snakeLen; i++) {
         snake.push_back(Snakepart(40+i, 10));
@@ -169,41 +174,41 @@ void Snake::enterGate(int inGateIdx){
     }   
     // outGate가 innerWall에 있다면
     else{ 
-        int checkDiretion[4] = {0,0,0,0}; 
+        int checkDirection[4] = {0,0,0,0}; 
         // <val> 0: 열려있음 | 1: 막혀있음 
         // <idx> 0: top / 1: right / 2: bottom / 3: left
 
         // 만약 gate가 sideWall과 붙어있으면 막혀있는 부분이 생김
-        if(outGate[0] == GAMEBOARD_START_Y) checkDiretion[0] = 1;
-        else if(outGate[0] == GAMEBOARD_END_Y) checkDiretion[2] = 1;
-        if(outGate[1] == GAMEBOARD_START_X) checkDiretion[3] = 1;
-        else if(outGate[1] == GAMEBOARD_END_X - 1) checkDiretion[1] = 1;
+        if(outGate[0] == GAMEBOARD_START_Y) checkDirection[0] = 1;
+        else if(outGate[0] == GAMEBOARD_END_Y) checkDirection[2] = 1;
+        if(outGate[1] == GAMEBOARD_START_X) checkDirection[3] = 1;
+        else if(outGate[1] == GAMEBOARD_END_X - 1) checkDirection[1] = 1;
 
         // innerWallArray를 순회하며 gate를 막고 있는 방향 체크
         for(int i=0; i<innerWallSize; i++){
             int y = innerWallArray[i][0];
             int x = innerWallArray[i][1];
 
-            if(y == outGate[0] - 1 && x == outGate[1]) checkDiretion[0] = 1; // up
-            else if(y == outGate[0] && x == outGate[1] + 1) checkDiretion[1] = 1; // right
-            else if(y == outGate[0] + 1 && x == outGate[1]) checkDiretion[2] = 1; // down
-            else if(y == outGate[0] && x == outGate[1] - 1) checkDiretion[3] = 1; // left
+            if(y == outGate[0] - 1 && x == outGate[1]) checkDirection[0] = 1; // up
+            else if(y == outGate[0] && x == outGate[1] + 1) checkDirection[1] = 1; // right
+            else if(y == outGate[0] + 1 && x == outGate[1]) checkDirection[2] = 1; // down
+            else if(y == outGate[0] && x == outGate[1] - 1) checkDirection[3] = 1; // left
         }
         
         // setDirectionInnerGate에서 막혀 있는 방향을 파악하여 진행방향 변경 혹은 유지
         switch (direction)
         {
         case 'u': // inGate에 up 방향으로 들어왔을 때
-            setDirectionInnerGate(0, checkDiretion); 
+            setDirectionInnerGate(0, checkDirection); 
             break;
         case 'r': // inGate에 right 방향으로 들어왔을 때
-            setDirectionInnerGate(1, checkDiretion);
+            setDirectionInnerGate(1, checkDirection);
             break;
         case 'd': // inGate에 down 방향으로 들어왔을 때
-            setDirectionInnerGate(2, checkDiretion);
+            setDirectionInnerGate(2, checkDirection);
             break;
         case 'l': // inGate에 left 방향으로 들어왔을 때
-            setDirectionInnerGate(1, checkDiretion);
+            setDirectionInnerGate(1, checkDirection);
             break;
         
         default:
@@ -266,6 +271,8 @@ void Snake::setDirectionInnerGate(int currDirection, int* checkDirection){
 }
 
 void Snake::moveHeadOutGate(int* outGate) {
+    play->gateCountIncrease();
+    play->setBoard();
 
     if (!get) {
         attron(COLOR_PAIR(WHITE));
@@ -274,7 +281,7 @@ void Snake::moveHeadOutGate(int* outGate) {
         attroff(COLOR_PAIR(WHITE));
         refresh();
         snake.pop_back();
-    }
+    } 
     
     snake.insert(snake.begin(), Snakepart(outGate[1], outGate[0]));
 
@@ -302,6 +309,11 @@ void Snake::putfood() {
                 continue;
             }
         }
+        for(int i=0; i<innerWallSize; i++){
+            if(snake[0].x == innerWallArray[i][1] && snake[0].y == innerWallArray[i][0]) {
+                continue;
+            }
+        }
         if (tmpx1 >= GAMEBOARD_END_X-1 || tmpx1 <= GAMEBOARD_START_X || tmpy1 >= GAMEBOARD_END_Y-1 || tmpy1 <= GAMEBOARD_START_Y) {
             continue;
         }
@@ -322,6 +334,11 @@ void Snake::putpoison() {
         int tmpy2 = rand() % GAMEBOARD_END_Y + 1;
         for (int i = 0; i < snake.size(); i++) {
             if (snake[i].x == tmpx2 && snake[i].y == tmpy2) {
+                continue;
+            }
+        }
+        for(int i=0; i<innerWallSize; i++){
+            if(snake[0].x == innerWallArray[i][1] && snake[0].y == innerWallArray[i][0]) {
                 continue;
             }
         }
@@ -368,12 +385,14 @@ bool Snake::collision() {
 
     if (snake[0].x == food.x && snake[0].y == food.y) {
         get = true;
+        play->growthIncrease();
+        play->setCurrentSize(snake.size()+1);
+        play->setBoard();
         putfood();
-        // play.growthIncrease();
         move(GAMEBOARD_END_Y-1, 0);
-        // if (play.getScore()%100 == 0) {
-        //     del -= 10000;
-        // }
+        if (play->getScore()%100 == 0) {
+            del -= 10000;
+        }
 
     } else {
         get = false;
@@ -381,12 +400,14 @@ bool Snake::collision() {
 
     if (snake[0].x == poison.x && snake[0].y == poison.y) {
         bad = true;
+        play->poisonIncrease();
+        play->setCurrentSize(snake.size()-1);
+        play->setBoard();
         putpoison();
-        // play.poisonIncrease();
         move(GAMEBOARD_END_Y-1, 0);
-        // if (play.getScore()%100 == 0) {
-        //     del -= 10000;
-        // }
+        if (play->getScore()%100 == 0) {
+            del -= 10000;
+        }
     } else {
         bad = false;
     }
@@ -426,6 +447,8 @@ void Snake::setDirection(int key){
 }
 
 void Snake::moveSnake() {
+    play->setCurrentSize(snake.size());
+    play->setBoard();
 
     if (!get) {
         attron(COLOR_PAIR(WHITE));
@@ -468,11 +491,14 @@ void Snake::moveSnake() {
     addch(snakepart);
     refresh();
     attroff(COLOR_PAIR(GREEN));
+
 }
 
 void Snake::start() {
     while (1) {
-        if (collision() || snake.size() == 1) {
+        if (collision() || snake.size() == 3) {
+            play->setCurrentSize(snake.size());
+            play->setBoard();
             break;
         }
         int tmp = getch();
