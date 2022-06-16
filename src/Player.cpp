@@ -7,6 +7,7 @@ Player::Player() {
     growth_count = 0;
     poison_count = 0;
     gate_count = 0;
+    current_loc = 1;
 }
 
 int Player::getCurrentSize() {
@@ -71,6 +72,17 @@ void Player::setCurrentLoc(const int current_loc) {
     this->current_loc = current_loc;
 }
 
+void Player::locIncrease() {
+    this->current_loc = current_loc;
+    current_loc++;
+}
+
+void Player::reset() {
+    Player::setGrowthCount(0);
+    Player::setPoisonCount(0);
+    Player::setGateCount(0);
+}
+
 char Player::checkSize() {
     if (Player::getCurrentSize() >= 10) { return 'V'; }
     else { return ' ';}
@@ -107,15 +119,15 @@ void Player::setBoard() {
     move(MISSIONBOARD_POS_Y+1, MISSIONBOARD_POS_X+1);
     printw("-----------MISSION----------");
     move(MISSIONBOARD_POS_Y+3, MISSIONBOARD_POS_X+2);
-    printw("B     : %5d   ( %c )", 10, Player::checkSize());
-    move(MISSIONBOARD_POS_Y+4, MISSIONBOARD_POS_X+2);
-    printw("+     : %5d   ( %c )", 5, Player::checkGrowth());
-    move(MISSIONBOARD_POS_Y+5, MISSIONBOARD_POS_X+2);
-    printw("-     : %5d   ( %c )", 2, Player::checkPoison());
-    move(MISSIONBOARD_POS_Y+6, MISSIONBOARD_POS_X+2);
-    printw("G     : %5d   ( %c )", 1, Player::checkGate());
-    move(MISSIONBOARD_POS_Y+8, MISSIONBOARD_POS_X+2);
     printw("Stage : %5d", current_loc);
+    move(MISSIONBOARD_POS_Y+4, MISSIONBOARD_POS_X+2);
+    printw("B     : %5d   ( %c )", 10, Player::checkSize());
+    move(MISSIONBOARD_POS_Y+5, MISSIONBOARD_POS_X+2);
+    printw("+     : %5d   ( %c )", 5, Player::checkGrowth());
+    move(MISSIONBOARD_POS_Y+6, MISSIONBOARD_POS_X+2);
+    printw("-     : %5d   ( %c )", 2, Player::checkPoison());
+    move(MISSIONBOARD_POS_Y+7, MISSIONBOARD_POS_X+2);
+    printw("G     : %5d   ( %c )", 1, Player::checkGate());
 
     refresh();
     attroff(COLOR_PAIR(WHITE));

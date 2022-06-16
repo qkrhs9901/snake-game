@@ -29,7 +29,6 @@ int main(){
     init_pair(RED_YELLOW, COLOR_RED, COLOR_YELLOW);       // set color as a pair to number 7 (text - RED / background - YELLOW) 
     init_pair(GREEN_YELLOW, COLOR_GREEN, COLOR_YELLOW);       // set color as a pair to number 7 (text - GREEN / background - YELLOW) 
 
-
     // inner wall
     Wall wall;
     wall.addColWall(GAMEBOARD_START_Y, GAMEBOARD_START_Y+7, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
@@ -40,7 +39,6 @@ int main(){
     int** stuckWallArray = wall.getStuckWallArray();
     int innerWallSize = wall.getInnerWallSize();
     int stuckWallSize = wall.getStuckWallSize();
-    wall.drawInnerWall();
 
     // gameboard
     GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
@@ -48,6 +46,8 @@ int main(){
     game.setBkgd(COLOR_PAIR(WHITE));
     game.addBorder(COLOR_PAIR(WHITE));
     game.refresh();
+
+    wall.drawInnerWall();
     
     // score board
     Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
@@ -68,13 +68,13 @@ int main(){
     s.setStuckWall(stuckWallSize, stuckWallArray);
     s.setGate();
     s.start();
-    
+
     attron(COLOR_PAIR(RED_WHITE));      // set color 2 to terminal
     move(14, 18);
     printw("G A M E   O V E R");
     refresh();
     attroff(COLOR_PAIR(RED_WHITE));     // reset color to terminal
-
+    
     nodelay(stdscr, false);
     getch();
     endwin();

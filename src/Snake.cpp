@@ -24,6 +24,7 @@ Snake::Snake(int** sideWallArray) : sideWallArray(sideWallArray){
     del = 110000;
     get = false;
     bad = false;
+    clear = false;
     snakeLen = 5;
 
     play = new Player();
@@ -512,6 +513,10 @@ void Snake::start() {
         setDirection(tmp);
         if (direction == 'q') {
             break;
+        }
+        if (play->checkSize() == 'V' && play->checkGrowth() == 'V' && play->checkPoison() == 'V' && play->checkGate() == 'V') {
+            play->locIncrease();
+            play->reset();
         }
         usleep(del);
     }

@@ -28,11 +28,13 @@ public:
     int getScore();
     int getCurrentLoc();
     void setCurrentLoc(const int current_loc);
+    void locIncrease();
     void setBoard();
     char checkSize();
     char checkGrowth();
     char checkPoison();
     char checkGate();
+    void reset();
 };
 
 #endif
