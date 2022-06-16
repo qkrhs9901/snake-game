@@ -7,10 +7,6 @@ Player::Player() {
     growth_count = 0;
     poison_count = 0;
     gate_count = 0;
-    check_s = false;
-    check_gr = false; 
-    check_p = false; 
-    check_ga = false;
 }
 
 int Player::getCurrentSize() {
