@@ -30,7 +30,10 @@ public:
     int getCurrentLoc();
     void setCurrentLoc(const int current_loc);
     void setBoard();
-    char check(bool c);
+    char checkSize();
+    char checkGrowth();
+    char checkPoison();
+    char checkGate();
 };
 
 #endif

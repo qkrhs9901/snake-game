@@ -74,8 +74,21 @@ int Player::getCurrentLoc() {
 void Player::setCurrentLoc(const int current_loc) {
     this->current_loc = current_loc;
 }
-char Player::check(bool c) {
-    if (c) { return 'V'; }
+
+char Player::checkSize() {
+    if (Player::getCurrentSize() >= 10) { return 'V'; }
+    else { return ' ';}
+}
+char Player::checkGrowth() {
+    if (Player::getGrowthCount() >= 5) { return 'V'; }
+    else { return ' ';}
+}
+char Player::checkPoison() {
+    if (Player::getPoisonCount() >= 2) { return 'V'; }
+    else { return ' ';}
+}
+char Player::checkGate() {
+    if (Player::getGateCount() >= 1) { return 'V'; }
     else { return ' ';}
 }
 
@@ -98,15 +111,15 @@ void Player::setBoard() {
     move(MISSIONBOARD_POS_Y+1, MISSIONBOARD_POS_X+1);
     printw("-----------MISSION----------");
     move(MISSIONBOARD_POS_Y+3, MISSIONBOARD_POS_X+2);
-    printw("B     : %5d   (%c)", 10, Player::check(check_s));
+    printw("B     : %5d   ( %c )", 10, Player::checkSize());
     move(MISSIONBOARD_POS_Y+4, MISSIONBOARD_POS_X+2);
-    printw("+     : %5d   (%c)", 5, Player::check(check_gr));
+    printw("+     : %5d   ( %c )", 5, Player::checkGrowth());
     move(MISSIONBOARD_POS_Y+5, MISSIONBOARD_POS_X+2);
-    printw("-     : %5d   (%c)", 2, Player::check(check_p));
+    printw("-     : %5d   ( %c )", 2, Player::checkPoison());
     move(MISSIONBOARD_POS_Y+6, MISSIONBOARD_POS_X+2);
-    printw("G     : %5d   (%c)", 1, Player::check(check_ga));
+    printw("G     : %5d   ( %c )", 1, Player::checkGate());
     move(MISSIONBOARD_POS_Y+8, MISSIONBOARD_POS_X+2);
-    printw("         GOOD LUCK         ");
+    printw("Stage : %5d", current_loc);
 
     refresh();
     attroff(COLOR_PAIR(WHITE));
