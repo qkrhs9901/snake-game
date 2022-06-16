@@ -311,10 +311,11 @@ void Snake::putfood() {
         }
         bool cnt = false;
         for(int i=0; i<innerWallSize && !cnt; i++){
-            if(snake[0].x == innerWallArray[i][1] && snake[0].y == innerWallArray[i][0]) {
+            if(tmpx1 == innerWallArray[i][1] && tmpy1 == innerWallArray[i][0]) {
                 cnt = true;
             }
-        }
+        } 
+        if (cnt == true) { continue; }
         if (tmpx1 >= GAMEBOARD_END_X-1 || tmpx1 <= GAMEBOARD_START_X || tmpy1 >= GAMEBOARD_END_Y-1 || tmpy1 <= GAMEBOARD_START_Y) {
             continue;
         }
@@ -340,10 +341,11 @@ void Snake::putpoison() {
         }
         bool cnt = false;
         for(int i=0; i<innerWallSize && !cnt; i++){
-            if(snake[0].x == innerWallArray[i][1] && snake[0].y == innerWallArray[i][0]) {
+            if(tmpx2 == innerWallArray[i][1] && tmpy2 == innerWallArray[i][0]) {
                 cnt = true;
             }
-        }
+        } 
+        if (cnt == true) { continue; }
         if (tmpx2 >= GAMEBOARD_END_X-1 || tmpx2 <= GAMEBOARD_START_X || tmpy2 >= GAMEBOARD_END_Y-1 || tmpy2 <= GAMEBOARD_START_Y) {
             continue;
         }
