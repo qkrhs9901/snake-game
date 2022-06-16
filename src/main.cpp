@@ -40,6 +40,7 @@ int main(){
     int** stuckWallArray = wall.getStuckWallArray();
     int innerWallSize = wall.getInnerWallSize();
     int stuckWallSize = wall.getStuckWallSize();
+    wall.drawInnerWall();
 
     // gameboard
     GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
@@ -47,8 +48,6 @@ int main(){
     game.setBkgd(COLOR_PAIR(WHITE));
     game.addBorder(COLOR_PAIR(WHITE));
     game.refresh();
-
-    wall.drawInnerWall();
     
     // score board
     Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
