@@ -1,6 +1,8 @@
 #ifndef __SETTINGS__
 #define __SETTINGS__
 
+// 게임을 위한 모든 상수 저장
+
 // keyboard inputs
 #define UP_KEY 'w' | 'W'        // W
 #define DOWN_KEY 's' | 'S'      // S

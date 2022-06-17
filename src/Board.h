@@ -5,6 +5,7 @@
 #ifndef __BOARD__
 #define __BOARD__
 
+// 게임, 스코어, 미션 보드 생성
 class Board{
     WINDOW *board_win;
     int height, width;

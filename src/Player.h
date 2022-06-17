@@ -3,6 +3,7 @@
 #include <ncurses.h>
 #include <iostream>
 
+// 플레이어 정보 저장
 class Player {
     int current_size;
     int max_size;

@@ -16,6 +16,7 @@ Snakepart::Snakepart() {
     y = 0;
 }
 
+// 게임 시작
 Snake::Snake(int** sideWallArray) : sideWallArray(sideWallArray){
     srand(time(NULL));
 
@@ -67,16 +68,19 @@ Snake::Snake(int** sideWallArray) : sideWallArray(sideWallArray){
 
 Snake::~Snake() {}
 
+// 내벽 생성
 void Snake::setInnerWall(int sz, int** innerWallArray){
     innerWallSize = sz;
     this->innerWallArray = innerWallArray;
 }
 
+// 외벽 생성
 void Snake::setStuckWall(int sz, int** stuckWallArray){
     stuckWallSize = sz;
     this->stuckWallArray = stuckWallArray;
 }
 
+// 이동할 게이트 생성
 void Snake::setGate(){
     // sideWall 혹은 innerWall에서 첫 번째 gate가 될 wall의 idx를 랜덤 추출
     int idx_1; 
@@ -153,6 +157,7 @@ void Snake::setGate(){
 
 }
 
+// 게이트 진입 시
 void Snake::enterGate(int inGateIdx){
     int outGateIdx = -inGateIdx + 1; // inGate가 1이면 0, 0이면 1(gateArray의 idx이다)
     int *inGate = gateArray[inGateIdx];
@@ -240,6 +245,7 @@ void Snake::enterGate(int inGateIdx){
     setGate();
 }
 
+// 게이트 통한 위치 이동
 void Snake::setDirectionInnerGate(int currDirection, int* checkDirection){  
     int newDirection;
 
@@ -271,6 +277,7 @@ void Snake::setDirectionInnerGate(int currDirection, int* checkDirection){
     }
 }
 
+// 게이트 통과
 void Snake::moveHeadOutGate(int* outGate) {
     play->gateCountIncrease();
     play->setBoard();
@@ -300,6 +307,7 @@ void Snake::moveHeadOutGate(int* outGate) {
     attroff(COLOR_PAIR(GREEN));
 }
 
+// Growth 아이템 배치
 void Snake::putfood() {
     while (1) {
         bool stop = false;
@@ -337,6 +345,7 @@ void Snake::putfood() {
     refresh();
 }
 
+// Poison 아이템 배치
 void Snake::putpoison() {
     while (1) {
         bool stop = false;
@@ -373,6 +382,7 @@ void Snake::putpoison() {
     refresh();
 }
 
+// 스네이크 충돌
 bool Snake::collision() {
     // head가 gate에 진입
     if(snake[0].x == gateArray[0][1] && snake[0].y == gateArray[0][0]){ // inGate가 0일 때
@@ -434,6 +444,7 @@ bool Snake::collision() {
     return false;
 }
 
+// 스네이트 이동 방향
 void Snake::setDirection(int key){
     // user input
     switch(key) {
@@ -465,6 +476,7 @@ void Snake::setDirection(int key){
     moveSnake();
 }
 
+// 스네이크 이동
 void Snake::moveSnake() {
     play->setCurrentSize(snakeLen);
     play->setBoard();
@@ -513,6 +525,7 @@ void Snake::moveSnake() {
     attroff(COLOR_PAIR(GREEN));
 }
 
+// 게임 시작
 void Snake::start() {
     while (1) {
         if (collision() || snakeLen == 3) {

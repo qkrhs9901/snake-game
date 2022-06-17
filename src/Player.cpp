@@ -83,23 +83,24 @@ void Player::reset() {
     Player::setGateCount(0);
 }
  
-char Player::checkSize() { // 10
-    if (Player::getCurrentSize() >= 10) { return 'V'; }
+char Player::checkSize() { 
+    if (Player::getCurrentSize() >= 10) { return 'V'; } // 10
     else { return ' ';}
 }
-char Player::checkGrowth() { // 5
-    if (Player::getGrowthCount() >= 5) { return 'V'; }
+char Player::checkGrowth() { 
+    if (Player::getGrowthCount() >= 5) { return 'V'; } // 5
     else { return ' ';}
 }
-char Player::checkPoison() { // 2
-    if (Player::getPoisonCount() >= 2) { return 'V'; }
+char Player::checkPoison() { 
+    if (Player::getPoisonCount() >= 2) { return 'V'; } // 2
     else { return ' ';}
 }
-char Player::checkGate() { // 1
-    if (Player::getGateCount() >= 1) { return 'V'; }
+char Player::checkGate() {  
+    if (Player::getGateCount() >= 1) { return 'V'; } // 1
     else { return ' ';}
 }
 
+// 스코어, 미션 보드 설정
 void Player::setBoard() {
 
     attron(COLOR_PAIR(WHITE));

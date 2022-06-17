@@ -7,7 +7,7 @@
 #ifndef __GAMEBOARD__
 #define __GAMEBOARD__
 
-
+// 게임 보드 생성
 class GameBoard : public Board {
     WINDOW *board_win;
 

@@ -8,6 +8,8 @@ using namespace std;
 #define INNERWALL_MAX_SIZE (GAMEBOARD_COLS * GAMEBOARD_ROWS) / 2 // wall을 추가할 수 있는 최대 sz는 총 픽셀의 절반
 #define STUCKWALL_MAX_SIZE (GAMEBOARD_COLS + GAMEBOARD_ROWS) / 2
 
+// 벽 설정
+
 class Wall{
     int **sideWallArray;
     int **innerWallArray;

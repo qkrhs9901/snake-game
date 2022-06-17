@@ -6,6 +6,8 @@
 #include "Player.h"
 using namespace std;
 
+// 스네이크의 움직임 포함 게임의 전체적인 실행
+
 // MACRO
 #ifndef __SNAKE__
 #define __SNAKE__
