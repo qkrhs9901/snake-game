@@ -171,7 +171,8 @@ void Wall::drawSideWall(){
 
 }
 
-void Wall::drawInnerWall(){
+void Wall::drawInnerWall(int a){
+    innerWallSize = a;
     attron(COLOR_PAIR(BLUE));
     for(int r=0; r<innerWallSize; r++){
         move(innerWallArray[r][0], innerWallArray[r][1]);

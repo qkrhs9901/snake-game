@@ -3,6 +3,7 @@
 #include <ncurses.h>
 #include <cstdlib>
 #include "Board.h"
+#include "Player.h"
 using namespace std;
 
 // MACRO
@@ -24,7 +25,7 @@ class Snake {
     Snakepart food;
     Snakepart poison;
     bool get, bad;
-
+    
     int** sideWallArray;
     int** innerWallArray = nullptr;
     int** stuckWallArray = nullptr;
@@ -33,6 +34,7 @@ class Snake {
     int gateArray[2][3]; //  0: y_pos / 1: x_pos / 2: side(0) | inner(1) 
 
 public:
+    bool clear;
     Snake(int** sideWallArray);
     ~Snake();
     void setInnerWall(int sz, int** innerWallArray);
@@ -49,6 +51,8 @@ public:
 
     void putfood();
     void putpoison();
+
+    Player* play;
 
     void start();
     vector<Snakepart> snake;
