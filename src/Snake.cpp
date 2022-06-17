@@ -24,6 +24,7 @@ Snake::Snake(int** sideWallArray) : sideWallArray(sideWallArray){
     del = 110000;
     get = false;
     bad = false;
+    clear = false;
     snakeLen = 5;
  
     play = new Player();
@@ -513,6 +514,8 @@ void Snake::moveSnake() {
 void Snake::start() {
     while (1) {
         if (collision() || snakeLen == 2) {
+            play->setCurrentSize(snakeLen);
+            play->setBoard();
             break;
         }
         int tmp = getch();
