@@ -466,6 +466,8 @@ void Snake::setDirection(int key){
 }
 
 void Snake::moveSnake() {
+    play->setCurrentSize(snakeLen);
+    play->setBoard();
 
     if (!get) {
         attron(COLOR_PAIR(WHITE));
@@ -513,7 +515,7 @@ void Snake::moveSnake() {
 
 void Snake::start() {
     while (1) {
-        if (collision() || snakeLen == 2) {
+        if (collision() || snakeLen == 3) {
             play->setCurrentSize(snakeLen);
             play->setBoard();
             break;
