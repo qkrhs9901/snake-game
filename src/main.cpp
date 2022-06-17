@@ -47,7 +47,7 @@ int main(){
     game.addBorder(COLOR_PAIR(WHITE));
     game.refresh();
 
-    wall.drawInnerWall();
+    wall.drawInnerWall(innerWallSize-7);
     
     // score board
     Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
@@ -64,10 +64,78 @@ int main(){
     mission.refresh();
     
     Snake s(sideWallArray);
-    s.setInnerWall(innerWallSize, innerWallArray);
+    s.setInnerWall(innerWallSize-7, innerWallArray);
     s.setStuckWall(stuckWallSize, stuckWallArray);
     s.setGate();
     s.start();
+
+    // stage 2
+    if (s.clear) {
+        s.clear = false;
+        wall.eraseInnerWall();
+        wall.drawSideWall();
+        GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
+        game.initialize();
+        game.setBkgd(COLOR_PAIR(WHITE));
+        game.addBorder(COLOR_PAIR(WHITE));
+        game.refresh();
+        wall.drawInnerWall(innerWallSize-5); 
+        s.setInnerWall(innerWallSize-5, innerWallArray);
+        s.setStuckWall(stuckWallSize, stuckWallArray);
+        s.setGate();
+        refresh();
+        s.putfood();
+        s.putpoison();
+        s.start();
+    }
+
+    // stage 3
+    if (s.clear) {
+        s.clear = false;
+        wall.eraseInnerWall();
+        wall.drawSideWall();
+        GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
+        game.initialize();
+        game.setBkgd(COLOR_PAIR(WHITE));
+        game.addBorder(COLOR_PAIR(WHITE));
+        game.refresh();
+        wall.drawInnerWall(innerWallSize-3); 
+        s.setInnerWall(innerWallSize-3, innerWallArray);
+        s.setStuckWall(stuckWallSize, stuckWallArray);
+        s.setGate();
+        refresh();
+        s.putfood();
+        s.putpoison();
+        s.start();
+    }
+
+    // stage 4
+    if (s.clear) {
+        s.clear = false;
+        wall.eraseInnerWall();
+        wall.drawSideWall();
+        GameBoard game(GAMEBOARD_ROWS, GAMEBOARD_COLS, GAMEBOARD_POS, GAMEBOARD_POS);
+        game.initialize();
+        game.setBkgd(COLOR_PAIR(WHITE));
+        game.addBorder(COLOR_PAIR(WHITE));
+        game.refresh();
+        wall.drawInnerWall(innerWallSize); 
+        s.setInnerWall(innerWallSize, innerWallArray);
+        s.setStuckWall(stuckWallSize, stuckWallArray);
+        s.setGate();
+        refresh();
+        s.putfood();
+        s.putpoison();
+        s.start();
+    }
+
+    if (s.clear) {
+        attron(COLOR_PAIR(RED_WHITE));      // set color 2 to terminal
+        move(16, 17);
+        printw("MISSON ACCOMPLISHED");
+        refresh();
+        attroff(COLOR_PAIR(RED_WHITE));     // reset color to terminal
+    }
 
     attron(COLOR_PAIR(RED_WHITE));      // set color 2 to terminal
     move(14, 18);

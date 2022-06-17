@@ -498,13 +498,13 @@ void Snake::moveSnake() {
     move(snake[1].y, snake[1].x);
     addch(snakepart);
     refresh();
-    attroff(COLOR_PAIR(GREEN));
+    attroff(COLOR_PAIR(GREEN)); 
 
 }
 
 void Snake::start() {
     while (1) {
-        if (collision() || snakeLen == 3) {
+        if (collision() || snakeLen == 3) { 
             play->setCurrentSize(snakeLen);
             play->setBoard();
             break;
@@ -517,6 +517,8 @@ void Snake::start() {
         if (play->checkSize() == 'V' && play->checkGrowth() == 'V' && play->checkPoison() == 'V' && play->checkGate() == 'V') {
             play->locIncrease();
             play->reset();
+            clear = true; 
+            break;
         }
         usleep(del);
     }

@@ -83,19 +83,19 @@ void Player::reset() {
     Player::setGateCount(0);
 }
 
-char Player::checkSize() {
+char Player::checkSize() { // 10
     if (Player::getCurrentSize() >= 10) { return 'V'; }
     else { return ' ';}
 }
-char Player::checkGrowth() {
+char Player::checkGrowth() { // 5
     if (Player::getGrowthCount() >= 5) { return 'V'; }
     else { return ' ';}
 }
-char Player::checkPoison() {
-    if (Player::getPoisonCount() >= 2) { return 'V'; }
+char Player::checkPoison() { // 2
+    if (Player::getPoisonCount() >= 5) { return 'V'; }
     else { return ' ';}
 }
-char Player::checkGate() {
+char Player::checkGate() { // 1
     if (Player::getGateCount() >= 1) { return 'V'; }
     else { return ' ';}
 }
