@@ -82,7 +82,7 @@ void Player::reset() {
     Player::setPoisonCount(0);
     Player::setGateCount(0);
 }
-
+ 
 char Player::checkSize() { // 10
     if (Player::getCurrentSize() >= 10) { return 'V'; }
     else { return ' ';}
@@ -92,7 +92,7 @@ char Player::checkGrowth() { // 5
     else { return ' ';}
 }
 char Player::checkPoison() { // 2
-    if (Player::getPoisonCount() >= 5) { return 'V'; }
+    if (Player::getPoisonCount() >= 2) { return 'V'; }
     else { return ' ';}
 }
 char Player::checkGate() { // 1

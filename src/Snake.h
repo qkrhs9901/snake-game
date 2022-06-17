@@ -25,7 +25,7 @@ class Snake {
     Snakepart food;
     Snakepart poison;
     bool get, bad;
-    
+
     int** sideWallArray;
     int** innerWallArray = nullptr;
     int** stuckWallArray = nullptr;

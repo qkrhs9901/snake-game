@@ -36,5 +36,5 @@ public:
     char checkGate();
     void reset();
 };
-
+ 
 #endif
