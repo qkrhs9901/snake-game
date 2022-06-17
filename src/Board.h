@@ -42,7 +42,7 @@ public:
         wattron(board_win, color_pair);
         wborder(board_win,' ',' ',' ',' ',' ',' ',' ',' ');
         wattroff(board_win, color_pair);
-    }
+    } 
 
     void clear() {
         wclear(board_win);

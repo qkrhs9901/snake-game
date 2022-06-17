@@ -18,7 +18,7 @@ Wall : Wall.o Wall.h Settings.h
 main : main.o Player.o Snake.o Wall.o Player.h Board.h GameBoard.h Snake.h Wall.h Settings.h
 	$(CC) $(STD) $(CCFLAG1) $(CCFLAG2) main main.o $(CURSES)
 
-
+ 
 clean :
 	rm -f *.o
 

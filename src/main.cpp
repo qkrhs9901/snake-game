@@ -28,7 +28,7 @@ int main(){
     init_pair(RED_WHITE, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 7 (text - RED / background - WHITE) 
     init_pair(RED_YELLOW, COLOR_RED, COLOR_YELLOW);       // set color as a pair to number 7 (text - RED / background - YELLOW) 
     init_pair(GREEN_YELLOW, COLOR_GREEN, COLOR_YELLOW);       // set color as a pair to number 7 (text - GREEN / background - YELLOW) 
-
+ 
     // inner wall
     Wall wall;
     wall.addColWall(GAMEBOARD_START_Y, GAMEBOARD_START_Y+7, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
@@ -48,7 +48,7 @@ int main(){
     game.refresh();
 
     wall.drawInnerWall(innerWallSize-7);
-    
+     
     // score board
     Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
     score.initialize();
@@ -62,7 +62,7 @@ int main(){
     mission.setBkgd(COLOR_PAIR(WHITE));
     mission.addBox();
     mission.refresh();
-    
+     
     Snake s(sideWallArray);
     s.setInnerWall(innerWallSize-7, innerWallArray);
     s.setStuckWall(stuckWallSize, stuckWallArray);

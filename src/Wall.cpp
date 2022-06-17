@@ -192,7 +192,7 @@ void Wall::eraseInnerWall(){
     refresh();
     innerWallSize = 0;
     stuckWallSize = 0;
-}
+} 
 
 
 

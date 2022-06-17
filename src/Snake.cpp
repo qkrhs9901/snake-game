@@ -26,7 +26,7 @@ Snake::Snake(int** sideWallArray) : sideWallArray(sideWallArray){
     bad = false;
     clear = false;
     snakeLen = 5;
-
+ 
     play = new Player();
     play->setGrowthCount(0);
     play->setGateCount(0);
