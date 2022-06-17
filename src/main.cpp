@@ -28,7 +28,8 @@ int main(){
     init_pair(RED_WHITE, COLOR_RED, COLOR_WHITE);       // set color as a pair to number 7 (text - RED / background - WHITE) 
     init_pair(RED_YELLOW, COLOR_RED, COLOR_YELLOW);       // set color as a pair to number 7 (text - RED / background - YELLOW) 
     init_pair(GREEN_YELLOW, COLOR_GREEN, COLOR_YELLOW);       // set color as a pair to number 7 (text - GREEN / background - YELLOW) 
- 
+
+
     // inner wall
     Wall wall;
     wall.addColWall(GAMEBOARD_START_Y, GAMEBOARD_START_Y+7, (GAMEBOARD_START_X + GAMEBOARD_END_X) / 2);
@@ -47,8 +48,8 @@ int main(){
     game.addBorder(COLOR_PAIR(WHITE));
     game.refresh();
 
-    wall.drawInnerWall(innerWallSize-7);
-     
+    wall.drawInnerWall();
+    
     // score board
     Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
     score.initialize();
@@ -64,11 +65,11 @@ int main(){
     mission.refresh();
      
     Snake s(sideWallArray);
-    s.setInnerWall(innerWallSize-7, innerWallArray);
+    s.setInnerWall(innerWallSize, innerWallArray);
     s.setStuckWall(stuckWallSize, stuckWallArray);
     s.setGate();
     s.start();
-
+    
     // stage 2
     if (s.clear) {
         s.clear = false;
@@ -79,7 +80,7 @@ int main(){
         game.setBkgd(COLOR_PAIR(WHITE));
         game.addBorder(COLOR_PAIR(WHITE));
         game.refresh();
-        wall.drawInnerWall(innerWallSize-5); 
+        wall.drawInnerWall(); 
         s.setInnerWall(innerWallSize-5, innerWallArray);
         s.setStuckWall(stuckWallSize, stuckWallArray);
         s.setGate();
@@ -99,7 +100,7 @@ int main(){
         game.setBkgd(COLOR_PAIR(WHITE));
         game.addBorder(COLOR_PAIR(WHITE));
         game.refresh();
-        wall.drawInnerWall(innerWallSize-3); 
+        wall.drawInnerWall(); 
         s.setInnerWall(innerWallSize-3, innerWallArray);
         s.setStuckWall(stuckWallSize, stuckWallArray);
         s.setGate();
@@ -119,7 +120,7 @@ int main(){
         game.setBkgd(COLOR_PAIR(WHITE));
         game.addBorder(COLOR_PAIR(WHITE));
         game.refresh();
-        wall.drawInnerWall(innerWallSize); 
+        wall.drawInnerWall(); 
         s.setInnerWall(innerWallSize, innerWallArray);
         s.setStuckWall(stuckWallSize, stuckWallArray);
         s.setGate();
@@ -136,16 +137,19 @@ int main(){
         refresh();
         attroff(COLOR_PAIR(RED_WHITE));     // reset color to terminal
     }
-
+    
     attron(COLOR_PAIR(RED_WHITE));      // set color 2 to terminal
     move(14, 18);
     printw("G A M E   O V E R");
     refresh();
     attroff(COLOR_PAIR(RED_WHITE));     // reset color to terminal
-    
+
     nodelay(stdscr, false);
     getch();
     endwin();
 
     return 0;
 }
+
+
+

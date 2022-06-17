@@ -25,7 +25,7 @@ class Snake {
     Snakepart food;
     Snakepart poison;
     bool get, bad;
-    
+
     int** sideWallArray;
     int** innerWallArray = nullptr;
     int** stuckWallArray = nullptr;
@@ -33,7 +33,7 @@ class Snake {
     int stuckWallSize = 0;
     int gateArray[2][3]; //  0: y_pos / 1: x_pos / 2: side(0) | inner(1) 
 
-public: 
+public:
     bool clear;
     Snake(int** sideWallArray);
     ~Snake();

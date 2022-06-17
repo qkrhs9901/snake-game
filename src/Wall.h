@@ -22,7 +22,7 @@ public:
     void addColWall(int sz, int start_y, int x); // 세로벽 추가
 
     void drawSideWall();
-    void drawInnerWall(int a);
+    void drawInnerWall();
     void eraseInnerWall();
     
     int** getSideWallArray() {return sideWallArray;}
@@ -35,5 +35,6 @@ public:
 };
  
 #endif
+
 
 
