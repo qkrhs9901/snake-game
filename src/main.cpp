@@ -48,7 +48,7 @@ int main(){
     game.addBorder(COLOR_PAIR(WHITE));
     game.refresh();
 
-    wall.drawInnerWall();
+    wall.drawInnerWall(innerWallSize-7);
     
     // score board
     Board score(SCOREBOARD_ROWS, SCOREBOARD_COLS, SCOREBOARD_POS_Y, SCOREBOARD_POS_X);
@@ -65,7 +65,7 @@ int main(){
     mission.refresh();
      
     Snake s(sideWallArray);
-    s.setInnerWall(innerWallSize, innerWallArray);
+    s.setInnerWall(innerWallSize-7, innerWallArray);
     s.setStuckWall(stuckWallSize, stuckWallArray);
     s.setGate();
     s.start();
@@ -80,7 +80,7 @@ int main(){
         game.setBkgd(COLOR_PAIR(WHITE));
         game.addBorder(COLOR_PAIR(WHITE));
         game.refresh();
-        wall.drawInnerWall(); 
+        wall.drawInnerWall(innerWallSize-5); 
         s.setInnerWall(innerWallSize-5, innerWallArray);
         s.setStuckWall(stuckWallSize, stuckWallArray);
         s.setGate();
@@ -100,7 +100,7 @@ int main(){
         game.setBkgd(COLOR_PAIR(WHITE));
         game.addBorder(COLOR_PAIR(WHITE));
         game.refresh();
-        wall.drawInnerWall(); 
+        wall.drawInnerWall(innerWallSize-3); 
         s.setInnerWall(innerWallSize-3, innerWallArray);
         s.setStuckWall(stuckWallSize, stuckWallArray);
         s.setGate();
@@ -120,7 +120,7 @@ int main(){
         game.setBkgd(COLOR_PAIR(WHITE));
         game.addBorder(COLOR_PAIR(WHITE));
         game.refresh();
-        wall.drawInnerWall(); 
+        wall.drawInnerWall(innerWallSize); 
         s.setInnerWall(innerWallSize, innerWallArray);
         s.setStuckWall(stuckWallSize, stuckWallArray);
         s.setGate();
